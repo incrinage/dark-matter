@@ -18,10 +18,23 @@ export default class Entity {
         ctx.rotate(this.theta * Math.PI / 180);
         ctx.strokeRect(-(this.width / 2), -(this.height / 2), this.width, this.height);
         ctx.restore();
+        return true;
     }
 
     setX(x){
         this.pos.x = x;
+    }
+
+    getX(){
+        return this.pos.x;
+    }
+
+    getY(){
+        return this.pos.y;
+    }
+
+    setVelocity(velocity){
+        this.velocity = velocity;
     }
 
     setY(y) {

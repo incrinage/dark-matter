@@ -1,13 +1,13 @@
 export default class Ammo {
 
-    ammo = [];
+    projectiles = [];
 
-    constructor(ammo){
-        this.ammo = ammo;
+    constructor(projectiles){
+        this.projectiles = projectiles;
     }
 
     deque(){
-        return this.ammo.shift();
+        return this.projectiles.shift();
     }
 
 }

@@ -1,4 +1,6 @@
 import { LEFT, RIGHT, SPACE_BAR, UP } from "../Key";
+import Renderer from "../Renderer";
+import UpdateService from "../UpdateService";
 
 
 export default class EntityTest {
@@ -6,8 +8,10 @@ export default class EntityTest {
         this.entity = entity;
         this.keyListener = keyListener;
         this.weapon = weapon;
-        this.renderQueue = [entity];
-        this.updateQueue = [entity];
+        this.renderer = new Renderer();
+        this.renderer.add(entity);
+        this.updateService = new UpdateService();
+        this.updateService.add(entity);
     }
 
 
@@ -16,7 +20,7 @@ export default class EntityTest {
         const dir = this.keyListener.deque();
         this.inputManager(dir);
         this.decelerateEverySecond(t);
-        this.updateQueue.forEach(entity => entity.update(t));
+        this.updateService.update(t);
     }
 
     decelerateEverySecond(t) {
@@ -27,12 +31,8 @@ export default class EntityTest {
             if (this.entity.velocity.x < 0 && this.entity.velocity.y < 0) {
                 this.entity.velocity.x = 0;
                 this.entity.velocity.y = 0;
-
             }
             this.dt = t;
-
-            console.log(this.entity);
-
         }
     }
 
@@ -50,13 +50,13 @@ export default class EntityTest {
         if (dir == SPACE_BAR) {
             const bullet = this.entity.fireWeapon(this.weapon);
             if (bullet) {
-                this.renderQueue.push(bullet);
-                this.updateQueue.push(bullet);
+                this.updateService.add(bullet);
+                this.renderer.add(bullet);
             };
         }
     }
 
     render(ctx) {
-        this.renderQueue.forEach(entity => entity.render(ctx));
+        this.renderer.render(ctx);
     }
 }
