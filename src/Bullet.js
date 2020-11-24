@@ -4,11 +4,11 @@ export default class Bullet extends Entity {
 
     damage = 0
 
-    constructor(damage) {
-        super({ x: 10, y: 10 });
+    constructor(props) {
+        super(props.pos && { pos: props.pos } || { pos: { x: 10, y: 10 } });
         super.setHeight(5);
         super.setWidth(5);
-        this.damage = damage;
+        this.damage = props.damage;
         this.travelDistance = 200;
         this.firedLocation = undefined;
     }

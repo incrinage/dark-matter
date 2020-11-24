@@ -2,11 +2,11 @@
 
 export default class Entity {
     dt = 0;
-    constructor(pos) {
-        this.pos = { x: pos.x, y: pos.y };
-        this.velocity = { x: 0, y: 0 };
+    constructor({pos, velocity, theta}) {
+        this.pos = pos;
+        this.velocity = velocity || { x: 0, y: 0 };
         this.acceleration = { x: 0, y: 0 };
-        this.theta = 0;
+        this.theta = theta || 0;
         this.width = 20;
         this.height = 20;
     }

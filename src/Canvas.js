@@ -14,6 +14,14 @@ export default class Canvas {
         canvas.height = h;
     }
 
+    getWidth(){
+        return canvas.width;
+    }
+
+    getHeight(){
+        return canvas.height;
+    }
+
     getContext() {
         return ctx;
     }

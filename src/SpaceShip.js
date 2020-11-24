@@ -1,8 +1,8 @@
 import Entity from "./Entity";
 
 export default class SpaceShip extends Entity {
-    constructor(pos) {
-        super(pos);
+    constructor(props) {
+        super(props);
     }
 
     //returns ammo dequed from weapon

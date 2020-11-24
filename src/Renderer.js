@@ -10,6 +10,7 @@ export default class Renderer {
     render(ctx) {
         const toTerminate = [];
         this.queue.forEach((entity, idx) => {
+            console.log(entity)
             if (!entity.render(ctx)) {
                 console.log('to be deleted renderer', entity)
                 toTerminate.push(idx);
