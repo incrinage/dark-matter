@@ -14,12 +14,12 @@ export default class UpdateService {
                 console.log('to be deleted updateservice', entity)
                 toTerminate.push(idx);
             }
-        })
+        });
 
         toTerminate.forEach((idx) => {
             this.queue = this.queue
                 .slice(0, idx)
                 .concat(this.queue.slice(idx + 1));
-        })
+        });
     }
 }
