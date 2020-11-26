@@ -12,7 +12,7 @@ export default class Weapon {
             projectile.setX(x);
             projectile.setY(y);
             projectile.setAngle(theta);
-            projectile.setVelocity({ x: 1, y: 1 });
+            projectile.setVelocity({ x: 1, y: 1, theta: 0 });
             projectile.setFiredLocation();
             return projectile;
         }

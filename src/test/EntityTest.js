@@ -35,13 +35,14 @@ export default class EntityTest {
     update(t) {
         const keyEvents = this.keyListener.flushQueue();
         this.engine.proccessInput(keyEvents);
-        this.registerSpawnedAsteroids(t);
+        this.asteroidSpawner.update(t);
+        this.registerSpawnedAsteroids();
         this.engine.update(t);
     }
 
 
-    registerSpawnedAsteroids(t) {
-        const asteroid = this.asteroidSpawner.spawnAsteroidEverySecond(t);
+    registerSpawnedAsteroids() {
+        const asteroid = this.asteroidSpawner.deque();
         if (asteroid) {
             this.engine.add(asteroid);
         }

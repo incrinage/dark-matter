@@ -8,7 +8,7 @@ import Weapon from './src/Weapon.js';
 import Ammo from './src/Ammo.js';
 import Bullet from './src/Bullet.js';
 
-export const canvas = new Canvas(1000, 1000);
+export const canvas = new Canvas(500, 500);
 
 function init() {
 

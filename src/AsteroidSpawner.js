@@ -6,27 +6,32 @@ import AsteroidFactory from "./AsteroidFactory";
 export default class AsteroidSpawner {
     constructor() {
         this.asteroidFactory = new AsteroidFactory();
+        this.queue = [];
     }
 
     dt = 0;
     side = 0;
     asteroidSizes = [TINY, XXS, XS, S, M, L, XL];
-    direction = [0, 90, 180, 270];
-    spawnAsteroidEverySecond(t) {
+
+    queueAsteroidEverySecond(t) {
         if (t - this.dt >= 1000) {
             const side = Math.floor(Math.random() * 4);
             const { pos, theta } = this.getOffScreenOrientation(side, XL);
+            const sign = Math.floor(Math.random());
             const a = this.asteroidFactory.create(XL,
                 {
-                    velocity: { x: 1, y: 1 },
+                    velocity: { x:  Math.random(), y: Math.random(), theta: (sign? .05 : -.05) },
                     pos,
                     theta
                 });
 
             this.dt = t;
-            return a;
+            this.queue.push(a);
         }
-        return undefined;
+    }
+
+    deque() {
+        return this.queue.shift();
     }
 
     getOffScreenOrientation(side, offset) {
@@ -44,6 +49,6 @@ export default class AsteroidSpawner {
 
 
     update(t) {
-        this.spawnAsteroidEverySecond(t);
+        this.queueAsteroidEverySecond(t);
     }
 }

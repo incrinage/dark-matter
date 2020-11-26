@@ -12,6 +12,7 @@ export default class Asteroid extends Entity {
         ctx.beginPath();
         ctx.arc(this.pos.x, this.pos.y, this.radius, 0, 2 * Math.PI);
         ctx.stroke();
+        ctx.strokeRect(this.pos.x, this.pos.y, this.width, this.height);
         return this.health != 0;
     }
 
