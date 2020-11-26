@@ -2,10 +2,9 @@
 
 export default class Entity {
     dt = 0;
-    constructor({pos, velocity, theta}) {
+    constructor({ pos, velocity, theta }) {
         this.pos = pos;
-        this.velocity = velocity || { x: 0, y: 0 };
-        this.acceleration = { x: 0, y: 0 };
+        this.velocity = velocity || { x: 0, y: 0, theta: 0 };
         this.theta = theta || 0;
         this.width = 20;
         this.height = 20;
@@ -21,19 +20,19 @@ export default class Entity {
         return true;
     }
 
-    setX(x){
+    setX(x) {
         this.pos.x = x;
     }
 
-    getX(){
+    getX() {
         return this.pos.x;
     }
 
-    getY(){
+    getY() {
         return this.pos.y;
     }
 
-    setVelocity(velocity){
+    setVelocity(velocity) {
         this.velocity = velocity;
     }
 
@@ -52,21 +51,21 @@ export default class Entity {
     updatePosition() {
         this.pos.x += this.velocity.x * Math.cos(this.theta * Math.PI / 180);
         this.pos.y += this.velocity.y * Math.sin(this.theta * Math.PI / 180);
+        this.theta += this.velocity.theta;
     }
 
     setAngle(theta) {
         this.theta = theta;
     }
 
-    rotate(num) {
-        this.theta = (this.theta + num) % 360;
+    rotate() {
+        this.theta = (this.theta + this.velocity.theta) % 360;
     }
 
-    accelerate(x, y) {
-        // this.acceleration.x += x;
+    accelerate(x, y, theta) {
         this.velocity.x += x;
-        // this.acceleration.y += y;
         this.velocity.y += y;
+        this.velocity.theta += theta || 0;
     }
 
     update(t) {

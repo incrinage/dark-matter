@@ -1,18 +1,20 @@
+import KeyEventQueue from "./KeyEventQueue";
+
 export default class KeyListener {
 
-    queue = [];
     constructor(keys) {
-        this.keys = keys;
-        window.addEventListener('keydown', (e) => {
-            if (this.keys.includes(e.key)) {
-                e.preventDefault();
-                this.queue.push(e.key);
-            }
-        });
+        this.keyEventQueue = new KeyEventQueue(keys);
+        window.addEventListener('keydown', this.keyEventQueue.queueKeyEvent);
+        window.addEventListener('keyup', this.keyEventQueue.queueKeyEvent);
     }
 
+    flushQueue(){
+       return this.keyEventQueue.flushQueue();
+    }
+
+
     deque() {
-        return this.queue.shift();
+        return this.keyEventQueue.deque();
     }
 
 }

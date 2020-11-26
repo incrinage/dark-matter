@@ -4,30 +4,46 @@ import UpdateService from "./UpdateService";
 
 export default class Engine {
 
-    constructor(){
+    constructor() {
         this.renderer = new Renderer();
         this.updateService = new UpdateService();
-        this.inputExecutor = new InputActionMap();
+        this.inputActionMap = new InputActionMap();
+        this.pressedKeys = {};
     }
 
     addKeyAction(key, action) {
-        this.inputExecutor.put(key, action);
+        this.inputActionMap.put(key, action);
     }
 
-    proccessInput(key) {
-        this.inputExecutor.executeKeyActions(key);
+    proccessInput(keyEvents) {
+        if (!keyEvents) return;
+        keyEvents.forEach(({ key, type }) => {
+            if (type == "keydown") {
+                console.log(key, type);
+                this.pressedKeys[key] = true;
+            } else if (type == "keyup") {
+                delete this.pressedKeys[key];
+            }
+        });
+
+        for(const key in this.pressedKeys){
+            if(this.pressedKeys[key]){
+                this.inputActionMap.executeKeyActions(key);
+            }
+        }
+
     }
 
-    add(entity){
+    add(entity) {
         this.updateService.add(entity);
         this.renderer.add(entity);
     }
 
-    update(t){
+    update(t) {
         this.updateService.update(t);
     }
 
-    render(ctx){
+    render(ctx) {
         this.renderer.render(ctx);
     }
 }

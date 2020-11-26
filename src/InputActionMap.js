@@ -1,6 +1,5 @@
 export default class InputActionMap {
 
-
     constructor() {
         this.actionMap = {};
     }
@@ -13,12 +12,11 @@ export default class InputActionMap {
     }
 
     executeKeyActions(key) {
-        if(this.actionMap[key]){
+        if (this.actionMap[key]) {
             this.actionMap[key].forEach(action => {
                 action();
             });
         }
-
     }
 
 }

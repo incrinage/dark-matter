@@ -1,6 +1,6 @@
 import AsteroidSpawner from "../AsteroidSpawner";
 import Engine from "../Engine";
-import { LEFT, RIGHT, SPACE_BAR, UP } from "../Key";
+import { DOWN, LEFT, RIGHT, SPACE_BAR, UP } from "../Key";
 
 
 export default class EntityTest {
@@ -10,14 +10,19 @@ export default class EntityTest {
         this.asteroidSpawner = new AsteroidSpawner();
         this.engine = new Engine();
         this.engine.add(spaceship);
+        const angularVelocity = .005;
         this.engine.addKeyAction(LEFT, () => {
-            this.spaceShip.rotate(-10);
+            this.spaceShip.accelerate(0, 0, -angularVelocity);
         });
         this.engine.addKeyAction(RIGHT, () => {
-            this.spaceShip.rotate(10);
+            this.spaceShip.accelerate(0, 0, angularVelocity);
         });
+        const acceleration = .016;
         this.engine.addKeyAction(UP, () => {
-            this.spaceShip.accelerate(.1, .1);
+            this.spaceShip.accelerate(acceleration, acceleration);
+        });
+        this.engine.addKeyAction(DOWN, () => {
+            this.spaceShip.accelerate(-acceleration, -acceleration);
         });
         this.engine.addKeyAction(SPACE_BAR, () => {
             const bullet = this.spaceShip.fireWeapon();
@@ -28,8 +33,8 @@ export default class EntityTest {
     }
 
     update(t) {
-        const key = this.keyListener.deque();
-        this.engine.proccessInput(key);
+        const keyEvents = this.keyListener.flushQueue();
+        this.engine.proccessInput(keyEvents);
         this.registerSpawnedAsteroids(t);
         this.engine.update(t);
     }
