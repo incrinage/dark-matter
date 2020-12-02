@@ -7,6 +7,7 @@ export default class Engine {
         this.queue = [];
         this.inputActionMap = new InputActionMap();
         this.pressedKeys = {};
+        this.add = this.add.bind(this);
     }
 
     addKeyAction(key, action) {
@@ -72,7 +73,7 @@ export default class Engine {
     update(t) {
         const failedPredicateIndicies = this.updateAndEvaluateUpdateCondition(t);
         const entitiesToRemove = this.remove(failedPredicateIndicies);
-        this.onRemove(entitiesToRemove); l
+        this.onRemove(entitiesToRemove); 
     }
 
     updateAndEvaluateUpdateCondition(t) {
@@ -88,7 +89,7 @@ export default class Engine {
     }
 
     onRemove(entitiesToRemove) {
-        entitiesToRemove.forEach((entity) => {
+        entitiesToRemove.forEach(({entity}) => {
             entity.onRemove({ add: this.add });
         })
     }

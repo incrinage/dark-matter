@@ -1,6 +1,25 @@
-import { L, M, S } from "./AstroidRadius";
+import { S } from "./AstroidRadius";
 import Entity from "./Entity";
+import { canvas } from './..';
 let id = 0;
+
+function asteroidDespawnPredicate(asteroid) {
+    return () => {
+
+        //remove if outside canvas outter boundary
+        if (asteroid.getX() < -canvas.getWidth() || asteroid.getX() > canvas.getWidth()
+            || asteroid.getY() < -canvas.getHeight() || asteroid.getY() > canvas.getHeight()) {
+            console.log("out of bounds", asteroid);
+            return true;
+        }
+        //remove asteroid if health is below half
+        if (asteroid.getHealthPercentage() <= asteroid.getHealthThreshold()) {
+            console.log("no health", asteroid);
+            return true;
+        }
+        return false;
+    };
+}
 export default class Asteroid extends Entity {
 
     constructor(props) {
@@ -44,10 +63,10 @@ export default class Asteroid extends Entity {
         ctx.stroke();
     }
 
-    onRemove({add}){
+    onRemove({ add }) {
         const asteroid = this.split();
-        if(asteroid){
-            add(asteroid, )
+        if (asteroid) {
+            add(asteroid, asteroidDespawnPredicate(asteroid));
         }
     }
 

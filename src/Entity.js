@@ -12,6 +12,7 @@ export default class Entity {
         this.health = health;
         this.maxHealth = health;
         this.healthThreshold = healthThreshold || 0;
+        this.onRemove = this.onRemove.bind(this);
     }
 
     render(ctx) {
