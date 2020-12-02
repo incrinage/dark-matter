@@ -32,7 +32,7 @@ export default class Engine {
 
     intersect() {
         const collisionEvents = [];
-        
+
         for (let i = 0; i < this.queue.length; i++) {
             for (let j = i; j < this.queue.length; j++) {
 
@@ -71,7 +71,8 @@ export default class Engine {
 
     update(t) {
         const failedPredicateIndicies = this.updateAndEvaluateUpdateCondition(t);
-        this.remove(failedPredicateIndicies);
+        const entitiesToRemove = this.remove(failedPredicateIndicies);
+        this.onRemove(entitiesToRemove); l
     }
 
     updateAndEvaluateUpdateCondition(t) {
@@ -86,14 +87,24 @@ export default class Engine {
         return failedPredicateIndicies;
     }
 
+    onRemove(entitiesToRemove) {
+        entitiesToRemove.forEach((entity) => {
+            entity.onRemove({ add: this.add });
+        })
+    }
+
     remove(toRemoveIdices) {
         const updatedQueue = [];
-        this.queue.forEach((entity, idx)=> {
-            if(!toRemoveIdices.includes(idx)){
+        const entitiesToRemove = [];
+        this.queue.forEach((entity, idx) => {
+            if (!toRemoveIdices.includes(idx)) {
                 updatedQueue.push(entity);
+            } else {
+                entitiesToRemove.push(entity);
             }
         })
         this.queue = updatedQueue;
+        return entitiesToRemove;
     }
 
     render(ctx) {

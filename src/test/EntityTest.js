@@ -57,12 +57,12 @@ export default class EntityTest {
     update(t) {
         const keyEvents = this.keyListener.flushQueue();
         this.engine.proccessInput(keyEvents);
-        // this.asteroidSpawner.queueAsteroidInterval(t, 5000, XL);
-        // this.registerSpawnedAsteroids();
+        this.asteroidSpawner.queueAsteroidInterval(t, 500, XL);
+        this.registerSpawnedAsteroids();
         this.engine.update(t);
         const collisions = this.engine.intersect();
         this.engine.applyCollisionPhysics(collisions);
-        this.splitAsteroids(collisions);
+        // this.splitAsteroids(collisions);
     }
 
 

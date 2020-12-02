@@ -1,5 +1,4 @@
 
-
 export default class Entity {
     dt = 0;
     constructor({ pos, velocity, theta, mass, health, healthThreshold }) {
@@ -24,11 +23,11 @@ export default class Entity {
         ctx.restore();
     }
 
-    getTheta(){
+    getTheta() {
         return this.theta;
     }
 
-    setMaxHealth(health){
+    setMaxHealth(health) {
         this.maxHealth = health;
     }
 
@@ -123,6 +122,10 @@ export default class Entity {
         this.velocity.x += x;
         this.velocity.y += y;
         this.velocity.theta += theta || 0;
+    }
+
+    onRemove({ add }) {
+
     }
 
     update(t) {

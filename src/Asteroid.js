@@ -5,7 +5,7 @@ export default class Asteroid extends Entity {
 
     constructor(props) {
         super({ ...props, })
-         this.id = id++;
+        this.id = id++;
         this.radius = props.radius || 5;
         this.width = props.radius * 2;
         this.height = props.radius * 2;
@@ -37,9 +37,18 @@ export default class Asteroid extends Entity {
     }
 
     render(ctx) {
+        ctx.font = "12px Arial";
+        ctx.fillText(` =${this.health}`, this.pos.x, this.pos.y);
         ctx.beginPath();
         ctx.arc(this.pos.x, this.pos.y, this.radius, 0, 2 * Math.PI);
         ctx.stroke();
+    }
+
+    onRemove({add}){
+        const asteroid = this.split();
+        if(asteroid){
+            add(asteroid, )
+        }
     }
 
     update(t) {
