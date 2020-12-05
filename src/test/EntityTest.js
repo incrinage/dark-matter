@@ -1,9 +1,9 @@
 import { canvas } from "../..";
-import { M, S, XL } from "../AstroidRadius";
-import AsteroidSpawner from "../AsteroidSpawner";
-import Engine from "../Engine";
+import { M, XL } from "../entity/asteroid/AsteroidRadius";
+import AsteroidSpawner from "../entity/asteroid/AsteroidSpawner";
+import Engine from "../engine/Engine";
 import { DOWN, LEFT, RIGHT, SPACE_BAR, UP } from "../Key";
-import Asteroid from "../Asteroid";
+import Asteroid from "../entity/asteroid/Asteroid";
 
 
 export default class EntityTest {
@@ -13,11 +13,11 @@ export default class EntityTest {
         this.asteroidSpawner = new AsteroidSpawner();
         this.engine = new Engine();
         this.engine.add(spaceship, spaceShipDespawnPredicate(spaceship));
-        const a1 = new Asteroid({ radius: S, pos: { x: 400, y: 400 }, velocity: { x: 1, y: 1, theta: 0 }, theta: 90, health: S, mass: 100 })
+        // const a1 = new Asteroid({ radius: S, pos: { x: 400, y: 400 }, velocity: { x: 1, y: 1, theta: 0 }, theta: 90, health: S, mass: 100 })
         // const a2 = new Asteroid({ radius: S, pos: { x: 420, y: 420 }, velocity: { x: 1, y: 1, theta: 0 }, theta: -90, health: S })
-        const a2 = new Asteroid({ radius: M, pos: { x: 400, y: 650 }, velocity: { x: 1, y: 1, theta: 0 }, theta: -90, health: M })
+        const a2 = new Asteroid({ radius: M, pos: { x: 400, y: 650 }, velocity: { x: 0, y: 0, theta: 0 }, theta: -90, health: M })
 
-        this.engine.add(a1, asteroidDespawnPredicate(a1));
+        // this.engine.add(a1, asteroidDespawnPredicate(a1));
         this.engine.add(a2, asteroidDespawnPredicate(a2));
         const angularVelocity = .005;
         this.engine.addKeyAction(LEFT, () => {
@@ -62,36 +62,8 @@ export default class EntityTest {
         this.engine.update(t);
         const collisions = this.engine.intersect();
         this.engine.applyCollisionPhysics(collisions);
-        // this.splitAsteroids(collisions);
     }
 
-
-    splitAsteroids(collisions) {
-        const smallAsteroids = [];
-        collisions.forEach(({ e1, e2 }) => {
-
-
-            if (e1.__proto__.constructor.name == "Asteroid" && e1.getHealth() <= 0) {
-                const s = e1.split();
-                if (s) {
-                    smallAsteroids.push(s);
-                }
-            }
-
-            if (e2.__proto__.constructor.name == "Asteroid" && e2.getHealth() <= 0) {
-                const s = e2.split();
-                if (s) {
-                    smallAsteroids.push(s);
-                }
-            }
-
-
-        });
-
-        smallAsteroids.forEach((a) => {
-            this.engine.add(a, asteroidDespawnPredicate(a));
-        });
-    }
 
     registerSpawnedAsteroids() {
         const asteroid = this.asteroidSpawner.deque();

@@ -1,7 +1,8 @@
+import Rectangle from "./shape/Rectangle";
 
 export default class Entity {
     dt = 0;
-    constructor({ pos, velocity, theta, mass, health, healthThreshold }) {
+    constructor({ pos, velocity, theta, mass, health, healthThreshold, maxVelocity, maxAngularVelocity }) {
         this.pos = pos;
         this.velocity = velocity || { x: 0, y: 0, theta: 0 };
         this.theta = theta || 0;
@@ -13,6 +14,8 @@ export default class Entity {
         this.maxHealth = health;
         this.healthThreshold = healthThreshold || 0;
         this.onRemove = this.onRemove.bind(this);
+        this.rectangle = new Rectangle({ x: this.pos.x, y: this.pos.y, width: this.getWidth(), height: this.getHeight() });
+        this.maxVelocity = maxVelocity || { x: 1, y: 1, theta: 1 };
     }
 
     render(ctx) {
@@ -34,6 +37,14 @@ export default class Entity {
 
     setX(x) {
         this.pos.x = x;
+    }
+
+    getMaxVelocity() {
+        return this.maxVelocity;
+    }
+
+    setMaxVelocity(v) {
+        this.maxVelocity = v;
     }
 
     getX() {
@@ -89,15 +100,17 @@ export default class Entity {
 
     setWidth(w) {
         this.width = w;
+        this.rectangle.setWidth(w);
     }
 
     setHeight(h) {
         this.height = h;
+        this.rectangle.setHeight(h);
     }
 
     updatePosition() {
-        this.pos.x += this.velocity.x * Math.cos(this.theta * Math.PI / 180);
-        this.pos.y += this.velocity.y * Math.sin(this.theta * Math.PI / 180);
+        this.pos.x += this.velocity.x * Math.cos(this.theta * Math.PI / 180) * .9;
+        this.pos.y += this.velocity.y * Math.sin(this.theta * Math.PI / 180) * .9;
         this.theta += this.velocity.theta;
     }
 
@@ -110,26 +123,37 @@ export default class Entity {
     }
 
     intersect(otherEntity) {
-        if (!(this.getX() > otherEntity.getX() + otherEntity.getWidth() ||
-            this.getX() + this.getWidth() < otherEntity.getX() ||
-            this.getY() > otherEntity.getY() + otherEntity.getHeight() ||
-            this.getY() + this.getHeight() < otherEntity.getY())) {
-            return true;
+        return this.getBoundary().intersect(otherEntity.getBoundary());
+    }
+
+    accelerate(x = 0, y = 0, theta = 0) {
+        if (this.velocity.x > this.maxVelocity.x) {
+            this.velocity.x = this.maxVelocity.x;
         }
 
-        return false;
-    }
-    accelerate(x, y, theta) {
+        if (this.velocity.y > this.maxVelocity.y) {
+            this.velocity.y = this.maxVelocity.y;
+        }
+
+        if (this.velocity.theta > this.maxVelocity.theta) {
+            this.velocity.theta = this.maxVelocity.theta;
+        }
+
         this.velocity.x += x;
         this.velocity.y += y;
-        this.velocity.theta += theta || 0;
+        this.velocity.theta += theta;
     }
 
     onRemove({ add }) {
 
     }
 
+    getBoundary() {
+        return this.rectangle;
+    }
+
     update(t) {
         this.updatePosition();
+
     }
 }

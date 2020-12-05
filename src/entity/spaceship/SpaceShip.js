@@ -1,4 +1,4 @@
-import Entity from "./Entity";
+import Entity from "../Entity";
 
 export default class SpaceShip extends Entity {
     constructor(props) {
@@ -12,6 +12,8 @@ export default class SpaceShip extends Entity {
 
     dt = 0;
     update(t) {
+        this.getBoundary().setX(this.getX());
+        this.getBoundary().setY(this.getY());
         return super.update(t);
     }
 

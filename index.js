@@ -1,16 +1,16 @@
-import Entity from './src/Entity.js';
+import Entity from './src/entity/Entity.js';
 import EntityTest from './src/test/EntityTest.js';
 import Canvas from './src/Canvas.js';
-import KeyListener from './src/KeyListener.js';
+import KeyListener from './src/engine/KeyListener.js';
 import { DOWN, LEFT, RIGHT, SPACE_BAR, UP } from './src/Key.js';
-import SpaceShip from './src/SpaceShip.js';
-import Weapon from './src/Weapon.js';
-import Ammo from './src/Ammo.js';
-import Bullet from './src/Bullet.js';
+import SpaceShip from './src/entity/spaceship/SpaceShip.js';
+import Weapon from './src/entity/spaceship/Weapon.js';
+import Ammo from './src/entity/spaceship/Ammo.js';
+import Bullet from './src/entity/spaceship/Bullet.js';
 
 export const canvas = new Canvas(1000, 1000);
 
-function init() {
+function DarkMatter() {
 
     const ctx = canvas.getContext();
     const spaceShipMass = 5;
@@ -37,5 +37,5 @@ function init() {
 }
 
 
-new init();
+new DarkMatter();
 
