@@ -12,7 +12,7 @@ export default class EntityTest {
         this.keyListener = keyListener;
         this.asteroidSpawner = new AsteroidSpawner();
         this.engine = new Engine();
-        this.engine.add(spaceship, spaceShipDespawnPredicate(spaceship));
+        this.engine.add(spaceship, this.spaceShipDespawnPredicate(spaceship));
         // const a1 = new Asteroid({ radius: S, pos: { x: 400, y: 400 }, velocity: { x: 1, y: 1, theta: 0 }, theta: 90, health: S, mass: 100 })
         // const a2 = new Asteroid({ radius: S, pos: { x: 420, y: 420 }, velocity: { x: 1, y: 1, theta: 0 }, theta: -90, health: S })
         const a2 = new Asteroid({ radius: M, pos: { x: 400, y: 650 }, velocity: { x: 0, y: 0, theta: 0 }, theta: -90, health: M })
@@ -21,17 +21,17 @@ export default class EntityTest {
         this.engine.add(a2, asteroidDespawnPredicate(a2));
         const angularVelocity = .005;
         this.engine.addKeyAction(LEFT, () => {
-            this.spaceShip.accelerate(0, 0, -angularVelocity);
+            if (this.spaceShip) this.spaceShip.accelerate(0, 0, -angularVelocity);
         });
         this.engine.addKeyAction(RIGHT, () => {
-            this.spaceShip.accelerate(0, 0, angularVelocity);
+            if (this.spaceShip) this.spaceShip.accelerate(0, 0, angularVelocity);
         });
         const acceleration = .016;
         this.engine.addKeyAction(UP, () => {
-            this.spaceShip.accelerate(acceleration, acceleration);
+            if (this.spaceShip) this.spaceShip.accelerate(acceleration, acceleration);
         });
         this.engine.addKeyAction(DOWN, () => {
-            this.spaceShip.accelerate(-acceleration, -acceleration);
+            if (this.spaceShip) this.spaceShip.accelerate(-acceleration, -acceleration);
         });
 
         function bulletDespawnPredicate(bullet) {
@@ -41,29 +41,55 @@ export default class EntityTest {
                 if (distance >= maxBulletDistance) {
                     return true;
                 }
+
+                if (bullet.getHealth() <= bullet.getHealthThreshold()) {
+                    return true;
+                }
                 return false;
 
             };
         }
-        this.engine.addKeyAction(SPACE_BAR, () => {
-            const bullet = this.spaceShip.fireWeapon();
-            if (bullet) {
-                this.engine.add(bullet, bulletDespawnPredicate(bullet), bulletDespawnPredicate(bullet));
-            };
-        });
+        let frame = 0;
+        // this.engine.addKeyAction(SPACE_BAR, () => {
+        //     const bullet = this.spaceShip.fireWeapon();
+        //     if (bullet) {
+        //         this.engine.add(bullet, bulletDespawnPredicate(bullet), bulletDespawnPredicate(bullet));
+        //     };
+        // });
+
+        window.addEventListener("keyup", (e) => {
+            e.preventDefault();
+            if (!this.spaceShip) return;
+
+            if (e.key === SPACE_BAR) {
+                const bullet = this.spaceShip.fireWeapon();
+                if (bullet) {
+                    this.engine.add(bullet, bulletDespawnPredicate(bullet));
+                } else {
+                    this.spaceShip.reload();
+                };
+            }
+        })
     }
 
 
     update(t) {
         const keyEvents = this.keyListener.flushQueue();
         this.engine.proccessInput(keyEvents);
-        this.asteroidSpawner.queueAsteroidInterval(t, 500, XL);
-        this.registerSpawnedAsteroids();
+        // this.asteroidSpawner.queueAsteroidInterval(t, 500, XL);
+        // this.registerSpawnedAsteroids();
+        this.updateBulletCount();
         this.engine.update(t);
         const collisions = this.engine.intersect();
         this.engine.applyCollisionPhysics(collisions);
     }
 
+
+    updateBulletCount() {
+        if (this.spaceShip) {
+            document.getElementById("ammo").innerHTML = "bullets: " + this.spaceShip.getAmmoRemaining();
+        }
+    }
 
     registerSpawnedAsteroids() {
         const asteroid = this.asteroidSpawner.deque();
@@ -74,6 +100,19 @@ export default class EntityTest {
 
     render(ctx) {
         this.engine.render(ctx);
+        if (this.spaceShip) {
+            this.spaceShip.renderAmmo(ctx);
+        }
+    }
+    spaceShipDespawnPredicate(spaceShip) {
+        return () => {
+            if (spaceShip.getHealthPercentage() <= spaceShip.getHealthThreshold()) {
+                this.spaceShip = undefined;
+                return true;
+            }
+
+            return false;
+        }
     }
 }
 
@@ -93,15 +132,5 @@ function asteroidDespawnPredicate(asteroid) {
         }
         return false;
     };
-}
-
-function spaceShipDespawnPredicate(spaceShip) {
-    return () => {
-        if (spaceShip.getHealthPercentage() <= spaceShip.getHealthThreshold()) {
-            return true;
-        }
-
-        return false;
-    }
 }
 

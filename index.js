@@ -5,8 +5,7 @@ import KeyListener from './src/engine/KeyListener.js';
 import { DOWN, LEFT, RIGHT, SPACE_BAR, UP } from './src/Key.js';
 import SpaceShip from './src/entity/spaceship/SpaceShip.js';
 import Weapon from './src/entity/spaceship/Weapon.js';
-import Ammo from './src/entity/spaceship/Ammo.js';
-import Bullet from './src/entity/spaceship/Bullet.js';
+
 
 export const canvas = new Canvas(1000, 1000);
 
@@ -20,7 +19,7 @@ function DarkMatter() {
             health: spaceShipMass,
             healthThreshold: 0,
             pos: { x: 100, y: 100 },
-            weapon: new Weapon(new Ammo([new Bullet({ pos: { x: 0, y: 0 } })]))
+            weapon: new Weapon()
         }),
         new KeyListener([LEFT, RIGHT, UP, SPACE_BAR, DOWN]),
     );

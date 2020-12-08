@@ -109,7 +109,7 @@ export default class Engine {
     }
 
     render(ctx) {
-        this.queue.forEach(({ entity }, idx) => {
+        this.queue.forEach(({ entity }) => {
             entity.render(ctx);
         });
 

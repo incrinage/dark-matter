@@ -10,11 +10,11 @@ export default class Entity {
         this.height = 20;
         this.color = 'blue';
         this.mass = mass || 5;
-        this.health = health;
-        this.maxHealth = health;
+        this.health = health || 5;
+        this.maxHealth = health || 5;
         this.healthThreshold = healthThreshold || 0;
         this.onRemove = this.onRemove.bind(this);
-        this.rectangle = new Rectangle({ x: this.pos.x, y: this.pos.y, width: this.getWidth(), height: this.getHeight() });
+        this.rectangle = new Rectangle({ x: this.pos.x, y: this.pos.y, width: this.getWidth(), height: this.getHeight(), theta: this.theta });
         this.maxVelocity = maxVelocity || { x: 1, y: 1, theta: 1 };
     }
 

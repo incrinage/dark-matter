@@ -1,10 +1,11 @@
 export default class Rectangle {
 
-    constructor({ x, y, width, height }) {
+    constructor({ x, y, width, height , theta}) {
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
+        this.theta = theta;
     }
 
     getX() {
@@ -37,6 +38,10 @@ export default class Rectangle {
 
     setWidth(w) {
         this.width = w;
+    }
+
+    setTheta(theta){
+        this.theta = theta;
     }
     intersect(rect) {
         if (!(this.getX() > rect.getX() + rect.getWidth() ||
