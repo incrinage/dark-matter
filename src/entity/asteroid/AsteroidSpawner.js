@@ -1,5 +1,5 @@
-import { L, M, S, X3S, XL, XS, XXS } from "./AstroidRadius";
-import { canvas } from "./..";
+import { L, M, S, X3S, XL, XS, XXS } from "./AsteroidRadius";
+import { canvas } from "../../..";
 import AsteroidFactory from "./AsteroidFactory";
 
 

@@ -1,5 +1,5 @@
 import Asteroid from "./Asteroid";
-import { L, M, S, X3S, XL, XS, XXS } from "./AstroidRadius";
+import { L, M, S, X3S, XL, XS, XXS } from "./AsteroidRadius";
 
 export default class AsteroidFactory {
 

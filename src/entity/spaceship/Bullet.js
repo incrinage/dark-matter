@@ -1,4 +1,4 @@
-import Entity from "./Entity";
+import Entity from "../Entity";
 
 export default class Bullet extends Entity {
 
@@ -11,10 +11,14 @@ export default class Bullet extends Entity {
 
     update(t) {
         super.update(t)
+        this.getBoundary().setX(this.getX());
+        this.getBoundary().setY(this.getY());
+        this.getBoundary().setTheta(this.getTheta());
     }
 
     render(ctx) {
         super.render(ctx);
+        this.getBoundary().render(ctx);
     }
 
     exhaust() {

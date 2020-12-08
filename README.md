@@ -1,2 +1,2 @@
 # dark-matter
-spaceship shooting asteroids
+spaceship shooting asteroids with elastic collisions
