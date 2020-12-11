@@ -17,7 +17,7 @@ export default class EntityTest {
         this.asteroidDespawnPredicate = this.asteroidDespawnPredicate.bind(this);
         // const a1 = new Asteroid({ radius: S, pos: { x: 400, y: 400 }, velocity: { x: 1, y: 1, theta: 0 }, theta: 90, health: S, mass: 100 })
         // const a2 = new Asteroid({ radius: S, pos: { x: 420, y: 420 }, velocity: { x: 1, y: 1, theta: 0 }, theta: -90, health: S })
-        const a2 = new Asteroid({ radius: M, pos: { x: 400, y: 650 }, velocity: { x: 0, y: 0, theta: 0 }, theta: -90, health: M })
+        const a2 = new Asteroid({ canvas:this.canvas, radius: M, pos: { x: 400, y: 650 }, velocity: { x: 0, y: 0, theta: 0 }, theta: -90, health: M })
 
         // this.engine.add(a1, asteroidDespawnPredicate(a1));
         this.engine.add(a2, this.asteroidDespawnPredicate(a2));
