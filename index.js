@@ -26,9 +26,16 @@ console.log(canvas)
         canvas
     );
 
-    this.update = (t) => {
+    this.dt = 0;
+    this.update = (now) => {
         canvas.clear();
-        this.entityTest.update(t);
+        console.log(now);
+        if(now - this.dt > 16){
+            
+            this.dt = now;
+            this.entityTest.update(now);
+        }
+      
         this.entityTest.render(ctx);
 
         requestAnimationFrame(this.update);
