@@ -1,11 +1,12 @@
 import { L, M, S, X3S, XL, XS, XXS } from "./AsteroidRadius";
-import { canvas } from "../../..";
+import {canvas} from "../../..";
 import AsteroidFactory from "./AsteroidFactory";
 
 
 export default class AsteroidSpawner {
-    constructor() {
+    constructor(canvas) {
         this.asteroidFactory = new AsteroidFactory();
+        this.canvas = canvas;
         this.queue = [];
     }
 
@@ -28,7 +29,8 @@ export default class AsteroidSpawner {
             {
                 velocity: { x: Math.random(), y: Math.random(), theta: (Math.random() * .05 - .05 * Math.random()) },
                 pos,
-                theta
+                theta,
+                canvas: this.canvas
             });
     }
 
@@ -44,13 +46,13 @@ export default class AsteroidSpawner {
         const top = 3;
         switch (side) {
             case left:
-                return { pos: { x: canvas.getWidth() + offset, y: canvas.getHeight() / 2 }, theta: 180 };
+                return { pos: { x: this.canvas.getWidth() + offset, y: this.canvas.getHeight() / 2 }, theta: 180 };
             case bottom:
-                return { pos: { x: canvas.getWidth() / 2, y: canvas.getHeight() + offset }, theta: 270 };
+                return { pos: { x: this.canvas.getWidth() / 2, y: this.canvas.getHeight() + offset }, theta: 270 };
             case right:
-                return { pos: { x: -offset, y: canvas.getHeight() / 2 }, theta: 0 };
+                return { pos: { x: -offset, y: this.canvas.getHeight() / 2 }, theta: 0 };
             case top:
-                return { pos: { x: canvas.getWidth() / 2, y: -offset }, theta: 90 };
+                return { pos: { x: this.canvas.getWidth() / 2, y: -offset }, theta: 90 };
         }
     }
 }

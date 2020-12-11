@@ -1,31 +1,15 @@
 import { S } from "./AsteroidRadius";
 import Entity from "../Entity";
-import { canvas } from '../../..';
 import Circle from "../shape/Circle.js";
 let id = 0;
 
-function asteroidDespawnPredicate(asteroid) {
-    return () => {
-
-        //remove if outside canvas outter boundary
-        if (asteroid.getX() < -canvas.getWidth() || asteroid.getX() > canvas.getWidth()
-            || asteroid.getY() < -canvas.getHeight() || asteroid.getY() > canvas.getHeight()) {
-            console.log("out of bounds", asteroid);
-            return true;
-        }
-        //remove asteroid if health is below half
-        if (asteroid.getHealthPercentage() <= asteroid.getHealthThreshold()) {
-            console.log("no health", asteroid);
-            return true;
-        }
-        return false;
-    };
-}
+ 
 export default class Asteroid extends Entity {
 
     constructor(props) {
         super({ ...props, })
         this.id = id++;
+        this.canvas = props.canvas;
         this.radius = props.radius || 5;
         this.setWidth(this.getRadius() * 2);
         this.setHeight(this.getRadius() * 2)
@@ -46,12 +30,30 @@ export default class Asteroid extends Entity {
         this.health = health < 0 ? 0 : health;
     }
 
+    asteroidDespawnPredicate(asteroid) {
+        return () => {
+    
+            //remove if outside canvas outter boundary
+            if (asteroid.getX() < -this.canvas.getWidth() || asteroid.getX() > this.canvas.getWidth()
+                || asteroid.getY() < -this.canvas.getHeight() || asteroid.getY() > this.canvas.getHeight()) {
+                console.log("out of bounds", asteroid);
+                return true;
+            }
+            //remove asteroid if health is below half
+            if (asteroid.getHealthPercentage() <= asteroid.getHealthThreshold()) {
+                console.log("no health", asteroid);
+                return true;
+            }
+            return false;
+        };
+    }
+
 
     split() {
         if (!this.isSplit) {
             this.isSplit = !this.isSplit;
             if (this.radius > S) {
-                return new Asteroid({ radius: 10, pos: { x: this.pos.x, y: this.pos.y }, velocity: { x: 1, y: 1, theta: 0 }, theta: this.theta, health: 10 })
+                return new Asteroid({canvas: this.canvas, radius: 10, pos: { x: this.pos.x, y: this.pos.y }, velocity: { x: 1, y: 1, theta: 0 }, theta: this.theta, health: 10 })
             }
         }
         return undefined;
@@ -82,7 +84,7 @@ export default class Asteroid extends Entity {
     onRemove({ add }) {
         const asteroid = this.split();
         if (asteroid) {
-            add(asteroid, asteroidDespawnPredicate(asteroid));
+            add(asteroid, this.asteroidDespawnPredicate(asteroid));
         }
     }
 

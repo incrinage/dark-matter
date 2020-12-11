@@ -1,5 +1,4 @@
-import { canvas } from "../..";
-import { M, XL } from "../entity/asteroid/AsteroidRadius";
+import { M, XL} from "../entity/asteroid/AsteroidRadius";
 import AsteroidSpawner from "../entity/asteroid/AsteroidSpawner";
 import Engine from "../engine/Engine";
 import { DOWN, LEFT, RIGHT, SPACE_BAR, UP } from "../Key";
@@ -7,19 +6,22 @@ import Asteroid from "../entity/asteroid/Asteroid";
 
 
 export default class EntityTest {
-    constructor(spaceship, keyListener) {
+    constructor(spaceship, keyListener, canvas) {
+        console.log(['asldaslkdasldkasdadadasdada'])
+        this.canvas = canvas;
         this.spaceShip = spaceship;
         this.keyListener = keyListener;
-        this.asteroidSpawner = new AsteroidSpawner();
+        this.asteroidSpawner = new AsteroidSpawner(this.canvas);
         this.engine = new Engine();
         this.engine.add(spaceship, this.spaceShipDespawnPredicate(spaceship));
+        this.asteroidDespawnPredicate = this.asteroidDespawnPredicate.bind(this);
         // const a1 = new Asteroid({ radius: S, pos: { x: 400, y: 400 }, velocity: { x: 1, y: 1, theta: 0 }, theta: 90, health: S, mass: 100 })
         // const a2 = new Asteroid({ radius: S, pos: { x: 420, y: 420 }, velocity: { x: 1, y: 1, theta: 0 }, theta: -90, health: S })
         const a2 = new Asteroid({ radius: M, pos: { x: 400, y: 650 }, velocity: { x: 0, y: 0, theta: 0 }, theta: -90, health: M })
 
         // this.engine.add(a1, asteroidDespawnPredicate(a1));
-        this.engine.add(a2, asteroidDespawnPredicate(a2));
-        const angularVelocity = .005;
+        this.engine.add(a2, this.asteroidDespawnPredicate(a2));
+        const angularVelocity = .016;
         this.engine.addKeyAction(LEFT, () => {
             if (this.spaceShip) this.spaceShip.accelerate(0, 0, -angularVelocity);
         });
@@ -72,12 +74,29 @@ export default class EntityTest {
         })
     }
 
+    asteroidDespawnPredicate(asteroid) {
+        return () => {
+    
+            //remove if outside canvas outter boundary
+            if (asteroid.getX() < -this.canvas.getWidth() || asteroid.getX() > this.canvas.getWidth()
+                || asteroid.getY() < -this.canvas.getHeight() || asteroid.getY() > this.canvas.getHeight()) {
+                console.log("out of bounds", asteroid);
+                return true;
+            }
+            //remove asteroid if health is below half
+            if (asteroid.getHealthPercentage() <= asteroid.getHealthThreshold()) {
+                console.log("no health", asteroid);
+                return true;
+            }
+            return false;
+        };
+    }
 
     update(t) {
         const keyEvents = this.keyListener.flushQueue();
         this.engine.proccessInput(keyEvents);
-        // this.asteroidSpawner.queueAsteroidInterval(t, 500, XL);
-        // this.registerSpawnedAsteroids();
+        this.asteroidSpawner.queueAsteroidInterval(t, 500, XL);
+        this.registerSpawnedAsteroids();
         this.updateBulletCount();
         this.engine.update(t);
         const collisions = this.engine.intersect();
@@ -94,7 +113,7 @@ export default class EntityTest {
     registerSpawnedAsteroids() {
         const asteroid = this.asteroidSpawner.deque();
         if (asteroid) {
-            this.engine.add(asteroid, asteroidDespawnPredicate(asteroid));
+            this.engine.add(asteroid, this.asteroidDespawnPredicate(asteroid));
         }
     }
 
@@ -114,23 +133,5 @@ export default class EntityTest {
             return false;
         }
     }
-}
-
-function asteroidDespawnPredicate(asteroid) {
-    return () => {
-
-        //remove if outside canvas outter boundary
-        if (asteroid.getX() < -canvas.getWidth() || asteroid.getX() > canvas.getWidth()
-            || asteroid.getY() < -canvas.getHeight() || asteroid.getY() > canvas.getHeight()) {
-            console.log("out of bounds", asteroid);
-            return true;
-        }
-        //remove asteroid if health is below half
-        if (asteroid.getHealthPercentage() <= asteroid.getHealthThreshold()) {
-            console.log("no health", asteroid);
-            return true;
-        }
-        return false;
-    };
 }
 

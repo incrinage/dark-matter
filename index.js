@@ -10,9 +10,10 @@ import Weapon from './src/entity/spaceship/Weapon.js';
 export const canvas = new Canvas(1000, 1000);
 
 function DarkMatter() {
-
+console.log(canvas)
     const ctx = canvas.getContext();
     const spaceShipMass = 5;
+    console.log('ahhsfafafa')
     this.entityTest = new EntityTest(
         new SpaceShip({
             mass: spaceShipMass,
@@ -22,6 +23,7 @@ function DarkMatter() {
             weapon: new Weapon()
         }),
         new KeyListener([LEFT, RIGHT, UP, SPACE_BAR, DOWN]),
+        canvas
     );
 
     this.update = (t) => {

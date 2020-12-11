@@ -1,0 +1,23 @@
+{
+  "name": "dark-matter",
+  "version": "0.0.0",
+  "description": "spaceship shooting asteroids with elastic collisions",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "parcel index.html"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/incrinage/dark-matter.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/incrinage/dark-matter/issues"
+  },
+  "homepage": "https://github.com/incrinage/dark-matter#readme",
+  "dependencies": {
+    "parcel": "^1.12.4"
+  }
+}
