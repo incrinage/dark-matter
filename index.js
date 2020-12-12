@@ -1,4 +1,3 @@
-import Entity from './src/entity/Entity.js';
 import EntityTest from './src/test/EntityTest.js';
 import Canvas from './src/Canvas.js';
 import KeyListener from './src/engine/KeyListener.js';
@@ -8,12 +7,33 @@ import Weapon from './src/entity/spaceship/Weapon.js';
 
 
 export const canvas = new Canvas(1000, 1000);
+const audioContext = new AudioContext();
+const audioElement = document.querySelector('audio');
+const track = audioContext.createMediaElementSource(audioElement);
+track.connect(audioContext.destination);
+// select our play button
+const playButton = document.querySelector('button');
 
+playButton.addEventListener('click', function () {
+
+    // check if context is in suspended state (autoplay policy)
+    if (audioContext.state === 'suspended') {
+        audioContext.resume();
+    }
+
+    // play or pause track depending on state
+    if (this.dataset.playing === 'false') {
+        audioElement.play();
+        this.dataset.playing = 'true';
+    } else if (this.dataset.playing === 'true') {
+        audioElement.pause();
+        this.dataset.playing = 'false';
+    }
+
+}, false);
 function DarkMatter() {
-console.log(canvas)
     const ctx = canvas.getContext();
     const spaceShipMass = 5;
-    console.log('ahhsfafafa')
     this.entityTest = new EntityTest(
         new SpaceShip({
             mass: spaceShipMass,
@@ -25,6 +45,8 @@ console.log(canvas)
         new KeyListener([LEFT, RIGHT, UP, SPACE_BAR, DOWN]),
         canvas
     );
+
+
 
     this.update = (t) => {
         canvas.clear();

@@ -72,7 +72,6 @@ export default class Asteroid extends Entity {
     }
 
     render(ctx) {
-        this.getBoundary().render(ctx);
         ctx.strokeStyle = 'black';
         ctx.font = "12px Arial";
         ctx.fillText(` ${this.health}`, this.pos.x, this.pos.y);
