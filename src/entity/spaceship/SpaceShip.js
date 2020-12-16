@@ -1,10 +1,13 @@
 import Entity from "../Entity";
+import MetalHitSound from '../../sound/spaceship/MetalHitSound.js';
 
 export default class SpaceShip extends Entity {
     constructor(props) {
         super(props);
+        this.collisionSound = new MetalHitSound();
         this.weapon = props.weapon;
         this.getAmmoRemaining = this.getAmmoRemaining.bind(this);
+        this.onIntersect = this.onIntersect.bind(this);
     }
 
     fireWeapon() {
@@ -46,6 +49,10 @@ export default class SpaceShip extends Entity {
             this.velocity.x = 0;
             this.velocity.y = 0;
         }
+    }
+
+    onIntersect(otherObject) {
+        this.collisionSound.play();
     }
 
 }

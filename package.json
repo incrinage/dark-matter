@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/incrinage/dark-matter#readme",
   "dependencies": {
-    "parcel": "^1.12.4"
+    "parcel": "^1.12.4",
+    "src": "^1.1.2"
   }
 }

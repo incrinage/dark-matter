@@ -6,31 +6,8 @@ import SpaceShip from './src/entity/spaceship/SpaceShip.js';
 import Weapon from './src/entity/spaceship/Weapon.js';
 
 
-export const canvas = new Canvas(1000, 1000);
-const audioContext = new AudioContext();
-const audioElement = document.querySelector('audio');
-const track = audioContext.createMediaElementSource(audioElement);
-track.connect(audioContext.destination);
-// select our play button
-const playButton = document.querySelector('button');
+export const canvas = new Canvas(500, 500);
 
-playButton.addEventListener('click', function () {
-
-    // check if context is in suspended state (autoplay policy)
-    if (audioContext.state === 'suspended') {
-        audioContext.resume();
-    }
-
-    // play or pause track depending on state
-    if (this.dataset.playing === 'false') {
-        audioElement.play();
-        this.dataset.playing = 'true';
-    } else if (this.dataset.playing === 'true') {
-        audioElement.pause();
-        this.dataset.playing = 'false';
-    }
-
-}, false);
 function DarkMatter() {
     const ctx = canvas.getContext();
     const spaceShipMass = 5;
@@ -50,7 +27,6 @@ function DarkMatter() {
     this.dt = 0;
     this.update = (now) => {
         canvas.clear();
-        console.log(now);
         if (now - this.dt > 16) {
 
             this.dt = now;

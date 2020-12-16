@@ -41,6 +41,8 @@ export default class Engine {
                     const e1 = this.queue[i].entity;
                     const e2 = this.queue[j].entity;
                     if (e1.intersect(e2)) {
+                        e1.onIntersect(e2);
+                        e2.onIntersect(e1);
                         console.log('intersect', e1, e2);
                         collisionEvents.push({ e1, e2 });
                     }
@@ -73,7 +75,7 @@ export default class Engine {
     update(t) {
         const failedPredicateIndicies = this.updateAndEvaluateUpdateCondition(t);
         const entitiesToRemove = this.remove(failedPredicateIndicies);
-        this.onRemove(entitiesToRemove); 
+        this.onRemove(entitiesToRemove);
     }
 
     updateAndEvaluateUpdateCondition(t) {
@@ -89,7 +91,7 @@ export default class Engine {
     }
 
     onRemove(entitiesToRemove) {
-        entitiesToRemove.forEach(({entity}) => {
+        entitiesToRemove.forEach(({ entity }) => {
             entity.onRemove({ add: this.add });
         })
     }

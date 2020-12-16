@@ -148,12 +148,15 @@ export default class Entity {
 
     }
 
+    onIntersect(o) {
+
+    }
+
     getBoundary() {
         return this.rectangle;
     }
 
     update(t) {
         this.updatePosition();
-
     }
 }

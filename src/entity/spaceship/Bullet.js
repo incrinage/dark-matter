@@ -1,4 +1,5 @@
 import Entity from "../Entity";
+import BulletHitRockSound from '../../sound/asteroid/BulletHitRockSound.js';
 
 export default class Bullet extends Entity {
 
@@ -6,6 +7,7 @@ export default class Bullet extends Entity {
         super(props);
         super.setHeight(5);
         super.setWidth(5);
+        this.collisionSound = new BulletHitRockSound();
         this.firedLocation = undefined;
     }
 
@@ -42,6 +44,10 @@ export default class Bullet extends Entity {
             return Math.sqrt(x * x + y * y);
         }
         return 0;
+    }
+
+    onIntersect(otherObject) {
+        this.collisionSound.play();
     }
 
 }
