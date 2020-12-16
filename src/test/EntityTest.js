@@ -13,7 +13,6 @@ export default class EntityTest {
         this.canvas = canvas;
         const mainMenuTheme = new MainMenuTheme();
         c.addEventListener('focusin', () => {
-            console.log('foc9sojcs')
             mainMenuTheme.play();
         })
 
@@ -112,7 +111,7 @@ export default class EntityTest {
 
     update(t) {
         const keyEvents = this.keyListener.flushQueue();
-        this.engine.proccessInput(keyEvents);
+        this.engine.updateHeldKeys(keyEvents);
         this.asteroidSpawner.queueAsteroidInterval(t, 2000, XL);
         this.registerSpawnedAsteroids();
         this.updateBulletCount();
