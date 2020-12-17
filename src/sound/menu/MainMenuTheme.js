@@ -1,27 +1,27 @@
-import MainMenuSong from './main-menu-theme.mp3';
+import MainMenuSong from './main-menu-theme-2.mp3';
 
 export default class MainMenuTheme {
 
     constructor() {
         this.filePath = MainMenuSong;
         this.audio = new Audio(MainMenuSong);
-        const a = this.audio;
-        this.audio.onended = ('ended', () => {
-            a.play()
-        });
+        this.setOnEndedToInvokePlay(this.audio)
         this.play = this.play.bind(this);
     }
 
     play() {
         if (this.audio.ended) {
             this.audio = new Audio(this.filePath);
-            let a = this.audio;
-            this.audio.onended = ('ended', () => {
-                a.play()
-            })
+            this.setOnEndedToInvokePlay(this.audio);
         }
 
         this.audio.play();
+    }
+
+    setOnEndedToInvokePlay(a) {
+        this.audio.onended = ('ended', () => {
+            a.play();
+        });
     }
 
     pause() {

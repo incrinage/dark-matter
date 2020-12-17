@@ -6,7 +6,7 @@ import SpaceShip from './src/entity/spaceship/SpaceShip.js';
 import Weapon from './src/entity/spaceship/Weapon.js';
 
 
-export const canvas = new Canvas(500, 500);
+export const canvas = new Canvas(700, 600);
 
 function DarkMatter() {
     const ctx = canvas.getContext();

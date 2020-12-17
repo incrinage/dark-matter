@@ -46,9 +46,8 @@ export default class Ammo {
         let spacingWidth = 12;
         let spacing = spacingWidth;
         this.projectiles.forEach(() => {
-            ctx.strokeRect(this.placementVector[0] + spacing, this.placementVector[1], 7 , 35);
+            ctx.strokeRect(this.placementVector[0] + spacing, this.placementVector[1], 7, 35);
             spacing += spacingWidth;
-            // spacingWidth += 20;
         })
     }
 

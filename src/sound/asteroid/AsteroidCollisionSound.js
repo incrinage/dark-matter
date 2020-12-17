@@ -4,9 +4,16 @@ export default class AsteroidCollisionSound {
 
     constructor() {
         this.file = AsteroidCollision;
+        this.volume = 1;
     }
 
     play() {
-        new Audio(this.file).play();
+        const audio = new Audio(this.file);
+        audio.volume = this.volume;
+        audio.play();
+    }
+
+    setVolume(v) {
+        this.volume = v;
     }
 }

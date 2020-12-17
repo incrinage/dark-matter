@@ -7,7 +7,7 @@ export default class Bullet extends Entity {
         super(props);
         super.setHeight(5);
         super.setWidth(5);
-        this.collisionSound = new BulletHitRockSound();
+        super.collisionSound = new BulletHitRockSound();
         this.firedLocation = undefined;
     }
 

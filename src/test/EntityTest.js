@@ -12,10 +12,7 @@ export default class EntityTest {
         const c = document.getElementById('canvas');
         this.canvas = canvas;
         const mainMenuTheme = new MainMenuTheme();
-        c.addEventListener('focusin', () => {
-            mainMenuTheme.play();
-        })
-
+        mainMenuTheme.play();
         this.spaceShip = spaceship;
         this.laserSound = new LaserWeaponSound();
         this.thrusterSound = new SpaceShipThrusterSound();
@@ -117,6 +114,7 @@ export default class EntityTest {
         this.updateBulletCount();
         this.engine.update(t);
         const collisions = this.engine.intersect();
+        this.engine.invokeCollisionInteractions(collisions);
         this.engine.applyCollisionPhysics(collisions);
     }
 

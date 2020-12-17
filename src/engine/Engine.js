@@ -49,7 +49,6 @@ export default class Engine {
     */
     intersect() {
         const collisionEvents = [];
-
         for (let i = 0; i < this.queue.length; i++) {
             for (let j = i; j < this.queue.length; j++) {
 
@@ -57,17 +56,15 @@ export default class Engine {
                     const e1 = this.queue[i].entity;
                     const e2 = this.queue[j].entity;
                     if (e1.intersect(e2)) {
-                        e1.onIntersect(e2);
-                        e2.onIntersect(e1);
                         console.debug(' Intersection ', e1, e2);
-                        collisionEvents.push({ e1, e2 });
+                        collisionEvents.push({ e1, e2, });
                     }
                 }
             }
         }
-
         return collisionEvents;
     }
+
 
     add(entity, updatePredicate) {
         this.queue.push({ entity, updatePredicate });
@@ -185,4 +182,28 @@ export default class Engine {
         });
 
     }
+
+    /**
+     * Invokes interactions on collisions based on
+     * user define function (not implemented).
+     * 
+     * Example, a callback with how to handle sound on intersection
+     * @param {*} collisions 
+     */
+    invokeCollisionInteractions(collisions) {
+        this.invokeCollisionSound(collisions)
+    }
+
+    invokeCollisionSound(collisions) {
+        collisions.forEach(({ e1, e2 }) => {
+            if (e1.getClass().name === e2.getClass().name) {
+                e1.getCollisionSound().play();
+            } else if (e1.getMass() / e2.getMass() >= 1) {
+                e2.getCollisionSound().play()
+            } else {
+                e1.getCollisionSound().play();
+            }
+        })
+    }
+
 }

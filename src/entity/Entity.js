@@ -1,9 +1,10 @@
 import Rectangle from "./shape/Rectangle";
-
+import MetalHitSound from '../sound/spaceship/MetalHitSound'
 export default class Entity {
     dt = 0;
     constructor({ pos, velocity, theta, mass, health, healthThreshold, maxVelocity, maxAngularVelocity }) {
         this.pos = pos;
+        this.collisionSound = new MetalHitSound();
         this.velocity = velocity || { x: 0, y: 0, theta: 0 };
         this.theta = theta || 0;
         this.width = 20;
@@ -27,8 +28,16 @@ export default class Entity {
         ctx.restore();
     }
 
+    getClass() {
+        return this.constructor;
+    }
+
     getTheta() {
         return this.theta;
+    }
+
+    getCollisionSound() {
+        return this.collisionSound;
     }
 
     setMaxHealth(health) {

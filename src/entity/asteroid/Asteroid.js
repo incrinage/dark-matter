@@ -10,7 +10,7 @@ export default class Asteroid extends Entity {
     constructor(props) {
         super({ ...props, })
         this.id = id++;
-        this.collisionSound = new AsteroidCollisionSound();
+        super.collisionSound = new AsteroidCollisionSound();
         this.canvas = props.canvas;
         this.radius = props.radius || 5;
         this.setWidth(this.getRadius() * 2);
@@ -82,6 +82,15 @@ export default class Asteroid extends Entity {
         ctx.stroke();
     }
 
+    onIntersect(otherObject) {
+        if (otherObject instanceof Asteroid) {
+            if (this.mass / otherObject.mass > 1) {
+                return;
+            }
+            this.collisionSound.play();
+        }
+    }
+
     onRemove({ add }) {
         const asteroid = this.split();
         if (asteroid) {
@@ -104,9 +113,5 @@ export default class Asteroid extends Entity {
         boundary.setY(this.getY() - this.getRadius());
     }
 
-    onIntersect(otherObject) {
-        if (otherObject instanceof Asteroid) {
-            this.collisionSound.play();
-        }
-    }
+
 }
