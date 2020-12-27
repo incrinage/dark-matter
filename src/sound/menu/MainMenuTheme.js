@@ -15,7 +15,7 @@ export default class MainMenuTheme {
             this.setOnEndedToInvokePlay(this.audio);
         }
 
-        this.audio.play();
+        // this.audio.play();
     }
 
     setOnEndedToInvokePlay(a) {

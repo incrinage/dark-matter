@@ -1,3 +1,4 @@
+import Sound from '../Sound';
 import LaserShot1 from './laser-shot-1-C2.mp3';
 import Lasershot2 from './laser-shot-2-Dflat2.mp3';
 import Lasershot3 from './laser-shot-3-D2.mp3';
@@ -9,9 +10,8 @@ export default class LaserWeaponSound {
         this.selected = 0;
     }
 
-    play() {
-        new Audio(this.files[this.selected]).play();
-        this.selected = ++this.selected % this.files.length;
+    createSound(ctx) {
+        this.selected = this.selected++ % this.files.length;
+        return new Sound(ctx, this.files[this.selected]);
     }
-
 }

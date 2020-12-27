@@ -1,3 +1,4 @@
+import Sound from '../Sound';
 import MetalHit from './rock-hitting-spaceship.mp3';
 
 export default class MetalHitSound {
@@ -5,8 +6,7 @@ export default class MetalHitSound {
         this.file = MetalHit;
     }
 
-
-    play() {
-        new Audio(this.file).play();
+    createSound(ctx) {
+        return new Sound(ctx, MetalHit);
     }
 }

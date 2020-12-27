@@ -7,7 +7,7 @@ export default class Bullet extends Entity {
         super(props);
         super.setHeight(5);
         super.setWidth(5);
-        super.collisionSound = new BulletHitRockSound();
+        this.collisionSound = new BulletHitRockSound();
         this.firedLocation = undefined;
     }
 
@@ -46,8 +46,21 @@ export default class Bullet extends Entity {
         return 0;
     }
 
-    onIntersect(otherObject) {
-        this.collisionSound.play();
+    getCollisionSound(ctx) {
+        return this.collisionSound.createSound(ctx);
+    }
+
+    onUpdate() {
+        const distance = this.distanceFromFiredLocation();
+        const maxBulletDistance = 200;
+        if (distance >= maxBulletDistance) {
+            return true;
+        }
+
+        if (this.getHealth() <= this.getHealthThreshold()) {
+            return true;
+        }
+        return false;
     }
 
 }

@@ -4,8 +4,8 @@
   "description": "spaceship shooting asteroids with elastic collisions",
   "main": "index.html",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "parcel index.html"
+    "test": "parcel src/test/index.html",
+    "build": "rm -rf ./dist && parcel index.html"
   },
   "repository": {
     "type": "git",

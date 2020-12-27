@@ -10,7 +10,7 @@ export default class Asteroid extends Entity {
     constructor(props) {
         super({ ...props, })
         this.id = id++;
-        super.collisionSound = new AsteroidCollisionSound();
+        this.collisionSound = new AsteroidCollisionSound();
         this.canvas = props.canvas;
         this.radius = props.radius || 5;
         this.setWidth(this.getRadius() * 2);
@@ -38,12 +38,12 @@ export default class Asteroid extends Entity {
             //remove if outside canvas outter boundary
             if (asteroid.getX() < -this.canvas.getWidth() || asteroid.getX() > this.canvas.getWidth()
                 || asteroid.getY() < -this.canvas.getHeight() || asteroid.getY() > this.canvas.getHeight()) {
-                console.log("out of bounds", asteroid);
+                console.debug("out of bounds", asteroid);
                 return true;
             }
             //remove asteroid if health is below half
             if (asteroid.getHealthPercentage() <= asteroid.getHealthThreshold()) {
-                console.log("no health", asteroid);
+                console.debug("no health", asteroid);
                 return true;
             }
             return false;
@@ -65,6 +65,10 @@ export default class Asteroid extends Entity {
         return this.circleBoundary;
     }
 
+    getCollisionSound(ctx) {
+        return this.collisionSound.createSound(ctx);
+    }
+
     intersect(other) {
         if (other instanceof Asteroid) {
             return this.getCircleBoundary().intersect(other.getCircleBoundary());
@@ -82,19 +86,10 @@ export default class Asteroid extends Entity {
         ctx.stroke();
     }
 
-    onIntersect(otherObject) {
-        if (otherObject instanceof Asteroid) {
-            if (this.mass / otherObject.mass > 1) {
-                return;
-            }
-            this.collisionSound.play();
-        }
-    }
-
     onRemove({ add }) {
         const asteroid = this.split();
         if (asteroid) {
-            add(asteroid, this.asteroidDespawnPredicate(asteroid));
+            add(asteroid);
         }
     }
 
@@ -113,5 +108,19 @@ export default class Asteroid extends Entity {
         boundary.setY(this.getY() - this.getRadius());
     }
 
+    onUpdate({ add }) {
+        //remove if outside canvas outter boundary
+        if (this.getX() < -this.canvas.getWidth() || this.getX() > this.canvas.getWidth()
+            || this.getY() < -this.canvas.getHeight() || this.getY() > this.canvas.getHeight()) {
+            console.debug("out of bounds", this);
+            return true;
+        }
+        //remove asteroid if health is below half
+        if (this.getHealthPercentage() <= this.getHealthThreshold()) {
+            console.debug("no health", this);
+            return true;
+        }
+        return false;
+    }
 
 }

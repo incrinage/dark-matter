@@ -1,12 +1,12 @@
-const canvas = document.getElementById('canvas');
-const ctx = canvas.getContext('2d');
+export const canvas = document.getElementById('canvas');
+export const ctx = canvas.getContext('2d');
 
 export default class Canvas {
-    constructor(w, h){
+    constructor(w, h) {
         canvas.width = w;
         canvas.height = h;
     }
-    
+
     setWidth(w) {
         canvas.width = w;
     }
@@ -15,11 +15,11 @@ export default class Canvas {
         canvas.height = h;
     }
 
-    getWidth(){
+    getWidth() {
         return canvas.width;
     }
 
-    getHeight(){
+    getHeight() {
         return canvas.height;
     }
 
@@ -36,8 +36,8 @@ export default class Canvas {
     static RIGHT = 2;
     static TOP = 3;
 
-   static getOffScreenOrientation(side, offset) {
-    
+    static getOffScreenOrientation(side, offset) {
+
         switch (side) {
             case this.RIGHT:
                 return { pos: { x: canvas.getWidth() + offset, y: canvas.getHeight() / 2 }, theta: 180 };

@@ -4,10 +4,9 @@ import MetalHitSound from '../../sound/spaceship/MetalHitSound.js';
 export default class SpaceShip extends Entity {
     constructor(props) {
         super(props);
-        super.collisionSound = new MetalHitSound();
+        this.collisionSound = new MetalHitSound();
         this.weapon = props.weapon;
         this.getAmmoRemaining = this.getAmmoRemaining.bind(this);
-        this.onIntersect = this.onIntersect.bind(this);
     }
 
     fireWeapon() {
@@ -36,6 +35,11 @@ export default class SpaceShip extends Entity {
         this.weapon.render(ctx);
     }
 
+    render(ctx) {
+        super.render(ctx);
+        this.weapon.render(ctx);
+    }
+
     reload(a) {
         this.weapon.reload(a);
     }
@@ -51,8 +55,16 @@ export default class SpaceShip extends Entity {
         }
     }
 
-    onIntersect(otherObject) {
-        this.collisionSound.play();
+    onUpdate() {
+        if (this.getHealthPercentage() <= this.getHealthThreshold()) {
+            this.spaceShip = undefined;
+            return true;
+        }
+
+        return false;
     }
 
+    getCollisionSound(ctx) {
+        return this.collisionSound.createSound(ctx);
+    }
 }

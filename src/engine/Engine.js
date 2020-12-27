@@ -10,8 +10,10 @@ export default class Engine {
         this.add = this.add.bind(this);
     }
 
-    addKeyAction(key, action) {
-        this.inputActionMap.put(key, action);
+    addKeyAction(keyActionList) {
+        keyActionList.forEach(({ key, action }) => {
+            this.inputActionMap.put(key, action);
+        })
     }
 
     /**
@@ -66,8 +68,8 @@ export default class Engine {
     }
 
 
-    add(entity, updatePredicate) {
-        this.queue.push({ entity, updatePredicate });
+    add(entity) {
+        this.queue.push({ entity });
     }
 
     /**
@@ -129,9 +131,9 @@ export default class Engine {
      */
     checkEntityUpdateCondition() {
         const failedPredicateIndicies = [];
-        this.queue.forEach(({ entity, updatePredicate }, idx) => {
-            if (updatePredicate ? updatePredicate() : false) {
-                console.log('updatePredicateFailed', entity)
+        this.queue.forEach(({ entity }, idx) => {
+            if (entity.onUpdate ? entity.onUpdate({ add: this.add }) : false) {
+                console.debug('updatePredicateFailed', entity)
                 failedPredicateIndicies.push(idx);
             }
         });
@@ -190,18 +192,22 @@ export default class Engine {
      * Example, a callback with how to handle sound on intersection
      * @param {*} collisions 
      */
-    invokeCollisionInteractions(collisions) {
-        this.invokeCollisionSound(collisions)
+    invokeCollisionInteractions(collisions, audioCtx) {
+        this.invokeCollisionSound(collisions, audioCtx)
     }
 
-    invokeCollisionSound(collisions) {
+    invokeCollisionSound(collisions, audioCtx) {
         collisions.forEach(({ e1, e2 }) => {
+            //objects of the same type are assumed to sound the same
+            //therefore one object play button is called 
+            //playing two tracks can sound out of sync
             if (e1.getClass().name === e2.getClass().name) {
-                e1.getCollisionSound().play();
-            } else if (e1.getMass() / e2.getMass() >= 1) {
-                e2.getCollisionSound().play()
+                e1.getCollisionSound(audioCtx).play();
+            } else if (e1.getMass() / e2.getMass() >= 1) {  //play the sound of the smaller object
+                e2.getCollisionSound(audioCtx).play()
             } else {
-                e1.getCollisionSound().play();
+                e1.getCollisionSound(audioCtx).play();
+                e2.getCollisionSound(audioCtx).play()
             }
         })
     }
