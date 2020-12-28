@@ -2,12 +2,18 @@ import InputActionMap from "./InputActionMap";
 
 export default class Engine {
 
-    constructor() {
+    constructor(keyListener, audioCtx) {
         this.queue = [];
         this.keyDownActionMap = new InputActionMap();
         this.keyUpActionMap = new InputActionMap();
         this.pressedKeys = {};
+        this.keyListener = keyListener;
+        this.audioCtx = audioCtx;
         this.add = this.add.bind(this);
+    }
+
+    getAudioContext() {
+        return this.audioCtx;
     }
 
     addKeyDownAction(keyActionList) {
@@ -49,17 +55,17 @@ export default class Engine {
         return removed;
     }
 
-    executeKeyDownActions() {
-        for (const key in this.pressedKeys) {
-            if (this.pressedKeys[key]) { //this can be made generic if the key list is passed
-                this.keyDownActionMap.executeKeyActions(key);
-            }
-        }
+    executeKeyDownActions(keys) {
+        const callBackParams = { audioCtx: this.audioCtx };
+        keys.forEach((key) => {
+            this.keyDownActionMap.executeKeyActions(key, callBackParams);
+        });
     }
 
     executeKeyUpActions(keys) {
+        const callBackParams = { audioCtx: this.audioCtx };
         keys.forEach((key) => {
-            this.keyUpActionMap.executeKeyActions(key);
+            this.keyUpActionMap.executeKeyActions(key, callBackParams);
         });
     }
 
@@ -127,10 +133,19 @@ export default class Engine {
      * 
     */
     update(t) {
+        const keyEvents = this.keyListener.flushQueue();
+        const releasedKeys = this.updateHeldKeys(keyEvents);
+        this.executeKeyDownActions(Object.keys(this.pressedKeys));
+        this.executeKeyUpActions(releasedKeys);
+
         this.updateEntities(t);
         const entityIndicies = this.checkEntityUpdateCondition();
         const entitiesRemoved = this.remove(entityIndicies);
         this.onRemove(entitiesRemoved);
+
+        const collisions = this.intersect();
+        this.invokeCollisionInteractions(collisions, this.audioCtx);
+        this.applyCollisionPhysics(collisions);
     }
 
 
@@ -223,12 +238,21 @@ export default class Engine {
             //therefore one object play button is called 
             //playing two tracks can sound out of sync
             if (e1.getClass().name === e2.getClass().name) {
-                e1.getCollisionSound(audioCtx).play();
+                const e1Sound = e1.getCollisionSound(audioCtx);
+                e1Sound.connect(audioCtx.destination);
+                e1Sound.play();
             } else if (e1.getMass() / e2.getMass() >= 1) {  //play the sound of the smaller object
-                e2.getCollisionSound(audioCtx).play()
+                const e2Sound = e2.getCollisionSound(audioCtx);
+                e2Sound.connect(audioCtx.destination);
+                e2Sound.play();
             } else {
-                e1.getCollisionSound(audioCtx).play();
-                e2.getCollisionSound(audioCtx).play()
+                const e1Sound = e1.getCollisionSound(audioCtx);
+                e1Sound.connect(audioCtx.destination);
+                e1Sound.play();
+
+                const e2Sound = e2.getCollisionSound(audioCtx);
+                e2Sound.connect(audioCtx.destination);
+                e2Sound.play();
             }
         })
     }

@@ -1,39 +1,41 @@
-import { M, XL } from "../entity/asteroid/AsteroidRadius";
+import { XL } from "../entity/asteroid/AsteroidRadius";
 import AsteroidSpawner from "../entity/asteroid/AsteroidSpawner";
 import Engine from "../engine/Engine";
 import { SPACE_BAR, UP } from "../engine/Key";
-import MainMenuTheme from "../sound/menu/MainMenuTheme.js";
 import SpaceShipSoundCollection from "../sound/spaceship/SpaceShipSoundCollection";
 import SpaceShipController from "../SpaceShipController";
+import MainMenuTheme from "../sound/menu/MainMenuTheme";
 
 
 export default class EntityTest {
     constructor(spaceship, keyListener, canvas) {
         this.canvas = canvas;
-        const mainMenuTheme = new MainMenuTheme();
-        mainMenuTheme.play();
-        this.audioCtx = new AudioContext();
+        this.engine = new Engine(keyListener, new AudioContext());
 
+        this.audioCtx = this.engine.getAudioContext();
+        this.engine.add(spaceship);
 
-        this.spaceShip = spaceship;
-        //space ship sounds 
-        this.spaceShipAudio = new SpaceShipSoundCollection();
-        this.thrusterSound = this.spaceShipAudio.createThrusterSound(this.audioCtx)
-        this.laserSound = this.spaceShipAudio.createLaserSound(this.audioCtx);
-
-
-        this.keyListener = keyListener;
+        this.controller = new SpaceShipController(spaceship);
         this.asteroidSpawner = new AsteroidSpawner(this.canvas);
 
-        this.engine = new Engine();
-        this.engine.add(spaceship);
-        this.controller = new SpaceShipController(spaceship);
+        this.mainMenuTheme = new MainMenuTheme().createSound(this.audioCtx);
 
+        this.mainMenuTheme.getAudio().loop = true;
+
+        this.mainMenuTheme.connect(this.audioCtx.destination);
+        this.mainMenuTheme.play();
+
+        this.spaceShip = spaceship;
+        this.spaceShipAudio = new SpaceShipSoundCollection();
+        this.thrusterSound = this.spaceShipAudio.createThrusterSound(this.audioCtx)
+        this.thrusterSound.connect(this.audioCtx.destination);
         this.engine.addKeyDownAction([
             this.controller.getDownCommand(),
             {
                 key: UP, action: () => {
-                    this.thrusterSound.play();
+                    if (this.spaceShip.getHealthPercentage() > 0) {
+                        this.thrusterSound.play();
+                    }
                 }
             },
             this.controller.getLeftCommand(),
@@ -50,12 +52,17 @@ export default class EntityTest {
             },
             {
                 key: SPACE_BAR, action: () => {
+                    if (this.spaceShip.getHealthPercentage() <= 0) { return; }
+
                     //fireWeapon should lead to the sound being made
                     //but the spacebar itself makes the action
                     //would be interesting to have fireWeapon -> CustomSoundEvent
                     const bullet = this.spaceShip.fireWeapon();
                     if (bullet) {
-                        this.laserSound.play();
+                        const sound = this.spaceShipAudio.createLaserSound(this.audioCtx);
+                        sound.connect(this.audioCtx.destination);
+                        sound.play();
+
                         //shooting sound
                         this.engine.add(bullet);
                     } else {
@@ -65,39 +72,14 @@ export default class EntityTest {
                     };
                 }
             },
-        ])
-
-
-
+        ]);
     }
 
     update(t) {
-
-
-
-        //--
-        //the following can happen in any order and is not related to the engine.
         this.asteroidSpawner.queueAsteroidInterval(t, 2000, XL);
         this.registerSpawnedAsteroids();
         this.updateBulletCount();
-        //--
-
         this.engine.update(t);
-
-        //--
-        //this code can be done in this.engine.update(t)
-        const keyEvents = this.keyListener.flushQueue();
-        const releasedKeys = this.engine.updateHeldKeys(keyEvents);
-        this.engine.executeKeyDownActions();
-        this.engine.executeKeyUpActions(releasedKeys);
-        //--
-
-        //-
-        //could also be done by the engine
-        const collisions = this.engine.intersect();
-        this.engine.invokeCollisionInteractions(collisions, this.audioCtx);
-        this.engine.applyCollisionPhysics(collisions);
-        //-
     }
 
     updateBulletCount() {

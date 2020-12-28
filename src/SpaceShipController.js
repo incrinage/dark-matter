@@ -3,7 +3,6 @@ import { DOWN, LEFT, RIGHT, UP } from "./engine/Key";
 export default class SpaceShipController {
 
     constructor(spaceship) {
-        console.log(spaceship)
         this.spaceShip = spaceship;
         this.acceleration = .030;
         this.angularVelocity = .030;

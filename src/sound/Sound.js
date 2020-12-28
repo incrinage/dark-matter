@@ -14,6 +14,10 @@ export default class Sound {
         return this.source;
     }
 
+    getAudio() {
+        return this.audio;
+    }
+
     play() {
         if (!this.isPlaying()) {
             this.gainNode.gain.setTargetAtTime(1, this.ctx.currentTime, .9);

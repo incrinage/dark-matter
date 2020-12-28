@@ -11,10 +11,10 @@ export default class InputActionMap {
         this.actionMap[key].push(action);
     }
 
-    executeKeyActions(key) {
+    executeKeyActions(key, callBackParams) {
         if (this.actionMap[key]) {
             this.actionMap[key].forEach(action => {
-                action();
+                action(callBackParams);
             });
         }
     }

@@ -76,7 +76,7 @@ export default class Entity {
     }
 
     getHealthPercentage() {
-        return this.health / this.maxHealth;
+        return (this.health * 100) / this.maxHealth;
     }
 
     getHealthThreshold() {
@@ -159,7 +159,6 @@ export default class Entity {
     onUpdate() {
 
     }
-
 
     getBoundary() {
         return this.rectangle;
