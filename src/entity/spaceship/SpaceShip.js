@@ -67,4 +67,16 @@ export default class SpaceShip extends Entity {
     getCollisionSound(ctx) {
         return this.collisionSound.createSound(ctx);
     }
+
+    onRemove({ add }) {
+        setTimeout(() => {
+            //set health
+            //set velocities to 0
+            this.health = this.maxHealth;
+            this.velocity.x = 0;
+            this.velocity.y = 0;
+            this.velocity.theta = 0;
+            add(this);
+        }, 3000)
+    }
 }

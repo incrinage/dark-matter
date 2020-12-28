@@ -1,5 +1,4 @@
 import Rectangle from "./shape/Rectangle";
-import MetalHitSound from '../sound/spaceship/MetalHitSound'
 export default class Entity {
     dt = 0;
     constructor({ pos, velocity, theta, mass, health, healthThreshold, maxVelocity, maxAngularVelocity }) {

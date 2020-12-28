@@ -4,11 +4,15 @@ export default class Engine {
 
     constructor(keyListener, audioCtx) {
         this.queue = [];
+        //--
+        //can wrap the filing input handlers into a class
         this.keyDownActionMap = new InputActionMap();
         this.keyUpActionMap = new InputActionMap();
         this.pressedKeys = {};
         this.keyListener = keyListener;
+        //--
         this.audioCtx = audioCtx;
+
         this.add = this.add.bind(this);
     }
 
@@ -237,21 +241,18 @@ export default class Engine {
             //objects of the same type are assumed to sound the same
             //therefore one object play button is called 
             //playing two tracks can sound out of sync
+            const e1Sound = e1.getCollisionSound(audioCtx);
+            e1Sound.connect(audioCtx.destination);
+
+            const e2Sound = e2.getCollisionSound(audioCtx);
+            e2Sound.connect(audioCtx.destination);
+
             if (e1.getClass().name === e2.getClass().name) {
-                const e1Sound = e1.getCollisionSound(audioCtx);
-                e1Sound.connect(audioCtx.destination);
                 e1Sound.play();
             } else if (e1.getMass() / e2.getMass() >= 1) {  //play the sound of the smaller object
-                const e2Sound = e2.getCollisionSound(audioCtx);
-                e2Sound.connect(audioCtx.destination);
                 e2Sound.play();
             } else {
-                const e1Sound = e1.getCollisionSound(audioCtx);
-                e1Sound.connect(audioCtx.destination);
                 e1Sound.play();
-
-                const e2Sound = e2.getCollisionSound(audioCtx);
-                e2Sound.connect(audioCtx.destination);
                 e2Sound.play();
             }
         })
