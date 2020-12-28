@@ -1,5 +1,5 @@
 import Sound from '../Sound';
-import ThrusterSound from './space-ship-thrusters-1.mp3';
+import ThrusterSound from './mp3/space-ship-thrusters-1.mp3';
 
 export default class SpaceShipThrusterSound {
 

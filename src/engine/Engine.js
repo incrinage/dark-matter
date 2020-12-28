@@ -3,16 +3,26 @@ import InputActionMap from "./InputActionMap";
 export default class Engine {
 
     constructor() {
-
         this.queue = [];
-        this.inputActionMap = new InputActionMap();
+        this.keyDownActionMap = new InputActionMap();
+        this.keyUpActionMap = new InputActionMap();
         this.pressedKeys = {};
         this.add = this.add.bind(this);
     }
 
-    addKeyAction(keyActionList) {
+    addKeyDownAction(keyActionList) {
         keyActionList.forEach(({ key, action }) => {
-            this.inputActionMap.put(key, action);
+            if (key && action) {
+                this.keyDownActionMap.put(key, action);
+            }
+        })
+    }
+
+    addKeyUpAction(keyActionList) {
+        keyActionList.forEach(({ key, action }) => {
+            if (key && action) {
+                this.keyUpActionMap.put(key, action);
+            }
         })
     }
 
@@ -27,19 +37,30 @@ export default class Engine {
 
     updateHeldKeys(keyEvents) {
         if (!keyEvents) return;
+        const removed = [];
         keyEvents.forEach(({ key, type }) => {
             if (type == "keydown") {
                 this.pressedKeys[key] = true;
             } else if (type == "keyup") {
+                removed.push(key);
                 delete this.pressedKeys[key];
             }
         });
+        return removed;
+    }
 
+    executeKeyDownActions() {
         for (const key in this.pressedKeys) {
-            if (this.pressedKeys[key]) {
-                this.inputActionMap.executeKeyActions(key);
+            if (this.pressedKeys[key]) { //this can be made generic if the key list is passed
+                this.keyDownActionMap.executeKeyActions(key);
             }
         }
+    }
+
+    executeKeyUpActions(keys) {
+        keys.forEach((key) => {
+            this.keyUpActionMap.executeKeyActions(key);
+        });
     }
 
     /**

@@ -1,4 +1,4 @@
-import { DOWN, LEFT, RIGHT, UP } from "./Key";
+import { DOWN, LEFT, RIGHT, UP } from "./engine/Key";
 
 export default class SpaceShipController {
 
@@ -44,6 +44,6 @@ export default class SpaceShipController {
     }
 
     getSpaceCommand() {
-        return {}
+        return { key: undefined, action: undefined };
     }
 }

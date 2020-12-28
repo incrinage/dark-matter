@@ -1,4 +1,4 @@
-import MainMenuSong from './main-menu-theme-2.mp3';
+import MainMenuSong from './mp3/main-menu-theme-2.mp3';
 
 export default class MainMenuTheme {
 

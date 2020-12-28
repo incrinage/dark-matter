@@ -1,5 +1,5 @@
 import Sound from '../Sound';
-import AsteroidCollision from './rock-hits-rock.mp3';
+import AsteroidCollision from './mp3/rock-hits-rock.mp3';
 
 export default class AsteroidCollisionSound {
 

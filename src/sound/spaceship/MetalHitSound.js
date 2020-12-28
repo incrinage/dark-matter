@@ -1,5 +1,5 @@
 import Sound from '../Sound';
-import MetalHit from './rock-hitting-spaceship.mp3';
+import MetalHit from './mp3/rock-hitting-spaceship.mp3';
 
 export default class MetalHitSound {
     constructor() {

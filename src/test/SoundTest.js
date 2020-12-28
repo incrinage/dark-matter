@@ -5,7 +5,6 @@ export default class SoundTest {
     constructor() {
         this.ctx = new AudioContext();
         this.audio = new Audio(SpaceShip);
-        // this.audio.crossOrigin = "anonymous";
         this.track = this.ctx.createMediaElementSource(this.audio);
         this.gainNode = this.ctx.createGain();
         this.track.connect(this.gainNode);

@@ -1,7 +1,7 @@
 import EntityTest from './src/test/EntityTest.js';
 import Canvas from './src/Canvas.js';
 import KeyListener from './src/engine/KeyListener.js';
-import { DOWN, LEFT, RIGHT, SPACE_BAR, UP } from './src/Key.js';
+import { DOWN, LEFT, RIGHT, SPACE_BAR, UP } from './src/engine/Key.js';
 import SpaceShip from './src/entity/spaceship/SpaceShip.js';
 import Weapon from './src/entity/spaceship/Weapon.js';
 
