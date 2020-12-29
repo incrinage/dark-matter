@@ -1,0 +1,14 @@
+<svg id="Component_2_1" data-name="Component 2 – 1" xmlns="http://www.w3.org/2000/svg" width="27.5" height="22" viewBox="0 0 27.5 22">
+  <g id="Polygon_7" data-name="Polygon 7" transform="translate(27.5 0.5) rotate(90)" fill="#fff">
+    <path d="M 20.12947845458984 17.5 L 0.8705216646194458 17.5 L 10.5 0.9923228621482849 L 20.12947845458984 17.5 Z" stroke="none"/>
+    <path d="M 10.5 1.984636306762695 L 1.741037368774414 17 L 19.25896263122559 17 L 10.5 1.984636306762695 M 10.5 0 L 21 18 L 0 18 L 10.5 0 Z" stroke="none" fill="#707070"/>
+  </g>
+  <g id="Ellipse_23" data-name="Ellipse 23" fill="#fff" stroke="#707070" stroke-width="1">
+    <ellipse cx="8" cy="11" rx="8" ry="11" stroke="none"/>
+    <ellipse cx="8" cy="11" rx="7.5" ry="10.5" fill="none"/>
+  </g>
+  <g id="Ellipse_24" data-name="Ellipse 24" transform="translate(2 2)" fill="#fff" stroke="#707070" stroke-width="1">
+    <ellipse cx="6" cy="9" rx="6" ry="9" stroke="none"/>
+    <ellipse cx="6" cy="9" rx="5.5" ry="8.5" fill="none"/>
+  </g>
+</svg>

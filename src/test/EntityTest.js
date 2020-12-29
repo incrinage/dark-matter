@@ -23,7 +23,11 @@ export default class EntityTest {
         this.mainMenuTheme.getAudio().loop = true;
 
         this.mainMenuTheme.connect(this.audioCtx.destination);
-        this.mainMenuTheme.play();
+
+        document.getElementById("play").onclick = () => {
+            this.audioCtx.resume();
+            this.mainMenuTheme.play();
+        };
 
         this.spaceShip = spaceship;
         this.spaceShipAudio = new SpaceShipSoundCollection();

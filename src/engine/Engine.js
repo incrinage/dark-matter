@@ -238,6 +238,9 @@ export default class Engine {
 
     invokeCollisionSound(collisions, audioCtx) {
         collisions.forEach(({ e1, e2 }) => {
+            if (this.audioCtx.state === 'suspended') {
+                return;
+            }
             //objects of the same type are assumed to sound the same
             //therefore one object play button is called 
             //playing two tracks can sound out of sync
