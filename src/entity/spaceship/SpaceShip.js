@@ -12,8 +12,8 @@ export default class SpaceShip extends Entity {
     fireWeapon() {
         const velocity = this.getVelocity();
         return this.weapon.fire(
-            this.getX() + this.getWidth() * 1.5 * Math.cos(this.theta * Math.PI / 180),
-            this.getY() + this.getHeight() * 1.5 * Math.sin(this.theta * Math.PI / 180),
+            this.getX() + this.getWidth() * Math.cos(this.theta * Math.PI / 180) + 7,//(this.getWidth()/4,
+            this.getY() + this.getHeight() * Math.sin(this.theta * Math.PI / 180) + 7,
             this.getTheta(),
             Math.abs(velocity.x),
             Math.abs(velocity.y)

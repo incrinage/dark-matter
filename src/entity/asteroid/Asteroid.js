@@ -1,7 +1,7 @@
 import { S } from "./AsteroidRadius";
 import Entity from "../Entity";
 import Circle from "../shape/Circle.js";
-import AsteroidCollisionSound from "../../sound/asteroid/AsteroidCollisionSound";
+import AsteroidCollisionSound from "../../sound/asteroid/AsteroidCollisionSound.js";
 let id = 0;
 
 

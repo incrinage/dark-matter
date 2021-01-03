@@ -1,8 +1,53 @@
 <html>
 
+<head>
+    <style>
+        #canvas {
+            border: 1px solid black;
+        }
+
+        #canvas-container {
+            text-align: center;
+            position: absolute;
+            left: 25%;
+        }
+
+        #main-menu {
+            border: 1px solid black;
+            background-color: whitesmoke;
+
+        }
+
+        #main-menu-container {
+            position: absolute;
+            text-align: center;
+            left: 25%;
+            z-index: 1;
+        }
+
+        #new-game-btn {
+            position: inherit;
+        }
+    </style>
+</head>
+
 <body>
-    <button id="play-btn"> play</button>
-    <script src="./SoundTest.js"></script>
+    <div>
+        <button id="play">play</button>
+
+        <div id="main-menu-container">
+            <div id="main-menu"><button id="new-game-btn">New Game</button></div>
+        </div>
+        <div id="canvas-container">
+            <div id="ammo"></div>
+            <div>
+                <canvas width="700" height="600" id="canvas"></canvas>
+            </div>
+        </div>
+    </div>
+    <script src="./MainMenuTest.js"></script>
 </body>
+
+
 
 </html>

@@ -4,35 +4,31 @@ import Engine from "../engine/Engine";
 import { SPACE_BAR, UP } from "../engine/Key";
 import SpaceShipSoundCollection from "../sound/spaceship/SpaceShipSoundCollection";
 import SpaceShipController from "../SpaceShipController";
-import MainMenuTheme from "../sound/menu/MainMenuTheme";
 
 
 export default class EntityTest {
-    constructor(spaceship, keyListener, canvas) {
+    constructor(spaceship, keyListener, canvas, audioCtx) {
+
         this.canvas = canvas;
-        this.engine = new Engine(keyListener, new AudioContext());
+        this.audioCtx = audioCtx;
+        this.spaceShip = spaceship;
 
-        this.audioCtx = this.engine.getAudioContext();
-        this.engine.add(spaceship);
+        //engine
+        this.engine = new Engine(keyListener, this.audioCtx);
 
+        //spaceship controller and asteroid spawner
         this.controller = new SpaceShipController(spaceship);
         this.asteroidSpawner = new AsteroidSpawner(this.canvas);
 
-        this.mainMenuTheme = new MainMenuTheme().createSound(this.audioCtx);
-
-        this.mainMenuTheme.getAudio().loop = true;
-
-        this.mainMenuTheme.connect(this.audioCtx.destination);
-
-        document.getElementById("play").onclick = () => {
-            this.audioCtx.resume();
-            this.mainMenuTheme.play();
-        };
-
-        this.spaceShip = spaceship;
+        //sound connections
+        this.mainGain = audioCtx.createGain();
+        this.engine.connect(this.mainGain);
         this.spaceShipAudio = new SpaceShipSoundCollection();
         this.thrusterSound = this.spaceShipAudio.createThrusterSound(this.audioCtx)
-        this.thrusterSound.connect(this.audioCtx.destination);
+        this.thrusterSound.connect(this.mainGain);
+
+        //adding spaceShip binding keyActions to controller 
+        this.engine.add(spaceship);
         this.engine.addKeyDownAction([
             this.controller.getDownCommand(),
             {
@@ -64,7 +60,7 @@ export default class EntityTest {
                     const bullet = this.spaceShip.fireWeapon();
                     if (bullet) {
                         const sound = this.spaceShipAudio.createLaserSound(this.audioCtx);
-                        sound.connect(this.audioCtx.destination);
+                        sound.connect(this.mainGain);
                         sound.play();
 
                         //shooting sound
@@ -77,6 +73,12 @@ export default class EntityTest {
                 }
             },
         ]);
+    }
+
+    play() { }
+
+    connect(node) {
+        this.mainGain.connect(node);
     }
 
     update(t) {

@@ -9,11 +9,16 @@ export default class Engine {
         this.keyDownActionMap = new InputActionMap();
         this.keyUpActionMap = new InputActionMap();
         this.pressedKeys = {};
-        this.keyListener = keyListener;
+        this.keyListener = keyListener; // keylistener acts as a way to get key events
+        // will need a way to route key press and mouse press
         //--
         this.audioCtx = audioCtx;
-
+        this.mainGain = audioCtx.createGain();
         this.add = this.add.bind(this);
+    }
+
+    connect(node) {
+        this.mainGain.connect(node);
     }
 
     getAudioContext() {
@@ -245,10 +250,10 @@ export default class Engine {
             //therefore one object play button is called 
             //playing two tracks can sound out of sync
             const e1Sound = e1.getCollisionSound(audioCtx);
-            e1Sound.connect(audioCtx.destination);
+            e1Sound.connect(this.mainGain);
 
             const e2Sound = e2.getCollisionSound(audioCtx);
-            e2Sound.connect(audioCtx.destination);
+            e2Sound.connect(this.mainGain);
 
             if (e1.getClass().name === e2.getClass().name) {
                 e1Sound.play();

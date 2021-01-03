@@ -1,7 +1,7 @@
 import Sound from '../Sound';
-import LaserShot1 from './mp3/laser-shot-1-C2.mp3';
-import Lasershot2 from './mp3/laser-shot-2-Dflat2.mp3';
-import Lasershot3 from './mp3/laser-shot-3-D2.mp3';
+import LaserShot1 from '../spaceship/mp3/laser-shot-1.mp3';
+import Lasershot2 from '../spaceship/mp3/laser-shot-2.mp3';
+import Lasershot3 from '../spaceship/mp3/laser-shot-3.mp3';
 
 export default class LaserWeaponSound {
 

@@ -8,6 +8,8 @@ export default class AsteroidSpawner {
         this.asteroidFactory = new AsteroidFactory();
         this.canvas = canvas;
         this.queue = [];
+        this.queueAsteroidInterval = this.queueAsteroidInterval.bind(this);
+        this.createAsteroid = this.createAsteroid.bind(this);
     }
 
     dt = 0;
