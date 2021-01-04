@@ -12,9 +12,22 @@ export default class Engine {
         this.keyListener = keyListener; // keylistener acts as a way to get key events
         // will need a way to route key press and mouse press
         //--
+        this.typeCallBackMap = {};
+
         this.audioCtx = audioCtx;
         this.mainGain = audioCtx.createGain();
         this.add = this.add.bind(this);
+    }
+
+    addTypeToTypeCollisionCallBack(t1, t2, fn) {
+        if (!this.typeCallBackMap[t1]) {
+            this.typeCallBackMap[t1] = {};
+        }
+        if (!this.typeCallBackMap[t2]) {
+            this.typeCallBackMap[t2] = {};
+        }
+        this.typeCallBackMap[t1][t2] = fn;
+        this.typeCallBackMap[t2][t1] = fn;
     }
 
     connect(node) {
@@ -158,6 +171,8 @@ export default class Engine {
     }
 
 
+
+
     /**
      * Updates entities by calling their update function.
      */
@@ -238,7 +253,8 @@ export default class Engine {
      * @param {*} collisions 
      */
     invokeCollisionInteractions(collisions, audioCtx) {
-        this.invokeCollisionSound(collisions, audioCtx)
+        this.invokeCollisionSound(collisions, audioCtx);
+        this.invokeTypeBasedCallback(collisions);
     }
 
     invokeCollisionSound(collisions, audioCtx) {
@@ -264,6 +280,18 @@ export default class Engine {
                 e2Sound.play();
             }
         })
+    }
+
+    typeCallBackMap = {};
+
+    invokeTypeBasedCallback(collisions) {
+        collisions.forEach(({ e1, e2 }) => {
+            const cb = this.typeCallBackMap[e1.constructor.name] ?
+                this.typeCallBackMap[e1.constructor.name][e2.constructor.name] :
+                undefined;
+
+            if (cb) cb(e1, e2);
+        });
     }
 
 }

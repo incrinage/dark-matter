@@ -42,6 +42,10 @@ export default class Entity {
         this.maxHealth = health;
     }
 
+    getMaxHealth() {
+        return this.maxHealth;
+    }
+
     setX(x) {
         this.pos.x = x;
     }

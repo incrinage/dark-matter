@@ -36,7 +36,8 @@ export default class SceneController {
     }
 
     restart() {
-        this.scenes[this.currentScene].restart();
+        const scene = this.scenes[this.currentScene].restart();
+        this.scenes[this.currentScene].scene = scene;
     }
 
     play() {

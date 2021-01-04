@@ -4,6 +4,9 @@ import Engine from "../engine/Engine";
 import { SPACE_BAR, UP } from "../engine/Key";
 import SpaceShipSoundCollection from "../sound/spaceship/SpaceShipSoundCollection";
 import SpaceShipController from "../SpaceShipController";
+import Score from "../score/Score";
+import Bullet from "../entity/spaceship/Bullet";
+import Asteroid from "../entity/asteroid/Asteroid";
 
 
 export default class EntityTest {
@@ -12,6 +15,7 @@ export default class EntityTest {
         this.canvas = canvas;
         this.audioCtx = audioCtx;
         this.spaceShip = spaceship;
+        this.score = new Score();
 
         //engine
         this.engine = new Engine(keyListener, this.audioCtx);
@@ -26,6 +30,14 @@ export default class EntityTest {
         this.spaceShipAudio = new SpaceShipSoundCollection();
         this.thrusterSound = this.spaceShipAudio.createThrusterSound(this.audioCtx)
         this.thrusterSound.connect(this.mainGain);
+        this.engine.addTypeToTypeCollisionCallBack(Bullet.name, Asteroid.name, (e1, e2) => {
+            //determine which is the asteroid 
+            if (e1 instanceof Bullet && e1.getMass() - e2.getHealth() <= 0) {
+                this.score.add(e2.getMaxHealth());
+            } else if (e2.getMass() - e1.getHealth() <= 0) {
+                this.score.add(e1.getMaxHealth());
+            }
+        })
 
         //adding spaceShip binding keyActions to controller 
         this.engine.add(spaceship);
@@ -85,6 +97,7 @@ export default class EntityTest {
         this.asteroidSpawner.queueAsteroidInterval(t, 2000, XL);
         this.registerSpawnedAsteroids();
         this.updateBulletCount();
+        this.updateScore();
         this.engine.update(t);
     }
 
@@ -92,6 +105,10 @@ export default class EntityTest {
         if (this.spaceShip) {
             document.getElementById("ammo").innerHTML = "bullets: " + this.spaceShip.getAmmoRemaining();
         }
+    }
+
+    updateScore() {
+        document.getElementById("score-board").innerHTML = "score: " + this.score.getValue();
     }
 
     registerSpawnedAsteroids() {
