@@ -41,4 +41,8 @@ export default class Sound {
     connect(node) {
         this.gainNode.connect(node);
     }
+
+    disconnect() {
+        this.gainNode.disconnect();
+    }
 }

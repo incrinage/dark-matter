@@ -3,3 +3,7 @@ export const RIGHT = 'ArrowRight';
 export const DOWN = 'ArrowDown';
 export const UP = 'ArrowUp';
 export const SPACE_BAR = " ";
+export const W = "w";
+export const A = "a";
+export const D = "d";
+export const S = "s";

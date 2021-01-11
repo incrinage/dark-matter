@@ -1,4 +1,4 @@
-import { S } from "./AsteroidRadius";
+import { SMALL } from "./AsteroidRadius";
 import Entity from "../Entity";
 import Circle from "../shape/Circle.js";
 import AsteroidCollisionSound from "../../sound/asteroid/AsteroidCollisionSound.js";
@@ -54,7 +54,7 @@ export default class Asteroid extends Entity {
     split() {
         if (!this.isSplit) {
             this.isSplit = !this.isSplit;
-            if (this.radius > S) {
+            if (this.radius > SMALL) {
                 return new Asteroid({ canvas: this.canvas, radius: 10, pos: { x: this.pos.x, y: this.pos.y }, velocity: { x: 1, y: 1, theta: 0 }, theta: this.theta, health: 10 })
             }
         }

@@ -8,8 +8,8 @@ export default class KeyListener {
         window.addEventListener('keyup', this.keyEventQueue.queueKeyEvent);
     }
 
-    flushQueue(){
-       return this.keyEventQueue.flushQueue();
+    flushQueue() {
+        return this.keyEventQueue.flushQueue();
     }
 
 

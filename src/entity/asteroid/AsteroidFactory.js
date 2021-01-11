@@ -1,5 +1,5 @@
 import Asteroid from "./Asteroid";
-import { L, M, S, X3S, XL, XS, XXS } from "./AsteroidRadius";
+import { L, M, SMALL, X3S, XL, XS, XXS } from "./AsteroidRadius";
 
 export default class AsteroidFactory {
 
@@ -15,8 +15,8 @@ export default class AsteroidFactory {
                 return new Asteroid({ ...props, radius: L, health: L, mass: L });
             case M:
                 return new Asteroid({ ...props, radius: M, health: M, mass: M });
-            case S:
-                return new Asteroid({ ...props, radius: S, health: S, mass: S });
+            case SMALL:
+                return new Asteroid({ ...props, radius: SMALL, health: SMALL, mass: SMALL });
             case XS:
                 return new Asteroid({ ...props, radius: XS, health: XS, mass: XS });
             case XXS:

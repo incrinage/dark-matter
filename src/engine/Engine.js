@@ -275,7 +275,10 @@ export default class Engine {
                 e1Sound.play();
             } else if (e1.getMass() / e2.getMass() >= 1) {  //play the sound of the smaller object
                 e2Sound.play();
-            } else {
+            } else if (e2.getMass() / e1.getMass() >= 1) {  //play the sound of the smaller object
+                e1Sound.play();
+            }
+            else {
                 e1Sound.play();
                 e2Sound.play();
             }

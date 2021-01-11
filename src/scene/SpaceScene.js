@@ -1,16 +1,17 @@
-import { XL } from "../entity/asteroid/AsteroidRadius";
+import { SMALL, XL } from "../entity/asteroid/AsteroidRadius";
 import AsteroidSpawner from "../entity/asteroid/AsteroidSpawner";
 import Engine from "../engine/Engine";
-import { SPACE_BAR, UP } from "../engine/Key";
+import { A, D, DOWN, LEFT, RIGHT, S, SPACE_BAR, UP, W } from "../engine/Key";
 import SpaceShipSoundCollection from "../sound/spaceship/SpaceShipSoundCollection";
 import SpaceShipController from "../SpaceShipController";
 import Score from "../score/Score";
 import Bullet from "../entity/spaceship/Bullet";
 import Asteroid from "../entity/asteroid/Asteroid";
+import KeyListener from "../engine/KeyListener";
 
 
-export default class EntityTest {
-    constructor(spaceship, keyListener, canvas, audioCtx) {
+export default class SpaceScene {
+    constructor(spaceship, canvas, audioCtx) {
 
         this.canvas = canvas;
         this.audioCtx = audioCtx;
@@ -18,7 +19,11 @@ export default class EntityTest {
         this.score = new Score();
 
         //engine
-        this.engine = new Engine(keyListener, this.audioCtx);
+        this.keyListener = new KeyListener([
+            LEFT, RIGHT, UP, SPACE_BAR, DOWN,
+            W, A, S, D
+        ]);
+        this.engine = new Engine(this.keyListener, this.audioCtx);
 
         //spaceship controller and asteroid spawner
         this.controller = new SpaceShipController(spaceship);
@@ -27,17 +32,19 @@ export default class EntityTest {
         //sound connections
         this.mainGain = audioCtx.createGain();
         this.engine.connect(this.mainGain);
+
         this.spaceShipAudio = new SpaceShipSoundCollection();
         this.thrusterSound = this.spaceShipAudio.createThrusterSound(this.audioCtx)
         this.thrusterSound.connect(this.mainGain);
+
         this.engine.addTypeToTypeCollisionCallBack(Bullet.name, Asteroid.name, (e1, e2) => {
             //determine which is the asteroid 
-            if (e1 instanceof Bullet && e1.getMass() - e2.getHealth() <= 0) {
+            if (e1 instanceof Bullet && e2.getHealth() - e1.getMass() <= 0) {
                 this.score.add(e2.getMaxHealth());
-            } else if (e2.getMass() - e1.getHealth() <= 0) {
+            } else if (e1.getHealth() - e2.getMass() <= 0) {
                 this.score.add(e1.getMaxHealth());
             }
-        })
+        });
 
         //adding spaceShip binding keyActions to controller 
         this.engine.add(spaceship);
@@ -52,7 +59,11 @@ export default class EntityTest {
             },
             this.controller.getLeftCommand(),
             this.controller.getRightCommand(),
-            this.controller.getUpCommand()
+            this.controller.getUpCommand(),
+            this.controller.getWCommand(),
+            this.controller.getSCommand(),
+            this.controller.getACommand(),
+            this.controller.getDCommand()
         ]);
 
         this.engine.addKeyUpAction([
@@ -66,9 +77,6 @@ export default class EntityTest {
                 key: SPACE_BAR, action: () => {
                     if (this.spaceShip.getHealthPercentage() <= 0) { return; }
 
-                    //fireWeapon should lead to the sound being made
-                    //but the spacebar itself makes the action
-                    //would be interesting to have fireWeapon -> CustomSoundEvent
                     const bullet = this.spaceShip.fireWeapon();
                     if (bullet) {
                         const sound = this.spaceShipAudio.createLaserSound(this.audioCtx);
@@ -87,10 +95,12 @@ export default class EntityTest {
         ]);
     }
 
-    play() { }
-
     connect(node) {
         this.mainGain.connect(node);
+    }
+
+    discconect() {
+        this.mainGain.discconect();
     }
 
     update(t) {
@@ -110,6 +120,7 @@ export default class EntityTest {
     updateScore() {
         document.getElementById("score-board").innerHTML = "score: " + this.score.getValue();
     }
+
 
     registerSpawnedAsteroids() {
         const asteroid = this.asteroidSpawner.deque();

@@ -7,6 +7,8 @@ export default class SpaceShip extends Entity {
         this.collisionSound = new MetalHitSound();
         this.weapon = props.weapon;
         this.getAmmoRemaining = this.getAmmoRemaining.bind(this);
+        this.strafe = { velocity: { x: 0, y: 0 } };
+
     }
 
     fireWeapon() {
@@ -55,6 +57,16 @@ export default class SpaceShip extends Entity {
         }
     }
 
+    accelerateStrafe(x = 0, y = 0) {
+        this.strafe.velocity.x += x;
+        this.strafe.velocity.y += y;
+    }
+
+    strafeMovement() {
+        this.pos.x += this.strafe.velocity.x;
+        this.pos.y += this.strafe.velocity.y;
+    }
+
     onUpdate() {
         if (this.getHealthPercentage() <= this.getHealthThreshold()) {
             this.spaceShip = undefined;
@@ -62,6 +74,20 @@ export default class SpaceShip extends Entity {
         }
 
         return false;
+    }
+
+    update(t) {
+        super.update(t);
+        this.strafeMovement();
+
+        const boundary = super.getBoundary();
+        boundary.setX(this.getX());
+        boundary.setY(this.getY());
+    }
+
+    setStrafeVelocity(x, y) {
+        this.strafe.velocity.x = x;
+        this.strafe.velocity.y = y;
     }
 
     getCollisionSound(ctx) {
@@ -76,6 +102,8 @@ export default class SpaceShip extends Entity {
             this.velocity.x = 0;
             this.velocity.y = 0;
             this.velocity.theta = 0;
+            this.strafe.velocity.x = 0;
+            this.strafe.velocity.y = 0;
             add(this);
         }, 3000)
     }

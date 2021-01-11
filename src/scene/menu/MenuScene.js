@@ -1,10 +1,11 @@
+import { getCanvasHeight, getCanvasWidth } from "../../..";
 import Menu from "../../menu/Menu";
 import MainMenuTheme from "../../sound/menu/MainMenuTheme";
 import Scene from "../Scene";
 
 export default class MenuScene {
-    constructor(audioCtx) {
-        this.menu = new Menu();
+    constructor(audioCtx, canvas) {
+        this.menu = new Menu(canvas.getWidth(), canvas.getHeight());
         this.sound = new MainMenuTheme().createSound(audioCtx);
         this.sound.getAudio().loop = true;
         this.sceneCallBack = () => { };
@@ -18,12 +19,16 @@ export default class MenuScene {
         this.scene = new Scene([this.menu], this.sound);
     }
 
-    play() {
+    playSound() {
         this.scene.playSound();
     }
 
     connect(node) {
         this.sound.connect(node);
+    }
+
+    disconnect(){
+        this.sound.disconnect()
     }
 
     setSceneCallBack(cb) {

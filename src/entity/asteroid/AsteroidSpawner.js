@@ -1,5 +1,4 @@
-import { L, M, S, X3S, XL, XS, XXS } from "./AsteroidRadius";
-import { canvas } from "../../..";
+import { L, M, SMALL, X3S, XL, XS, XXS } from "./AsteroidRadius";
 import AsteroidFactory from "./AsteroidFactory";
 
 
@@ -13,7 +12,7 @@ export default class AsteroidSpawner {
     }
 
     dt = 0;
-    asteroidSizes = [X3S, XXS, XS, S, M, L, XL];
+    asteroidSizes = [X3S, XXS, XS, SMALL, M, L, XL];
     canvasSide = 0;
     queueAsteroidInterval(currTime, milliSeconds, asteroidRadius) {
         if (currTime - this.dt >= milliSeconds) {

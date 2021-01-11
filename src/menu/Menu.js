@@ -1,16 +1,19 @@
-import { canvas } from "../Canvas";
 import NewGameButton from "./NewGameButton";
 
 export default class Menu {
-    constructor() {
+    constructor(width, height) {
         this.menu = document.getElementById("main-menu");
-        this.menu.style.width = canvas.width;
-        this.menu.style.height = canvas.height;
+        this.menu.style.width = width;
+        this.menu.style.height = height;
         this.newGameButton = new NewGameButton();
     }
 
     show() {
         this.menu.style.visibility = "visible";
+    }
+
+    getDomElement() {
+        return this.menu;
     }
 
     hide() {

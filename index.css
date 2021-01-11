@@ -1,4 +1,4 @@
-    #canvas {
+    canvas {
     border: 1px solid black;
     }
 
@@ -7,24 +7,26 @@
     padding: 0;
     }
 
-    #canvas-container {
+    .canvas-container {
     text-align: center;
     position: absolute;
     left: 25%;
     }
 
     #main-menu {
-    border: 1px solid black;
-    background-color: whitesmoke;
+        border: 1px solid black;
+        background-color: whitesmoke;
+        visibility: hidden;
+
 
     }
 
     #main-menu-container {
-    position: absolute;
-    text-align: center;
-    left: 25%;
-    z-index: 1;
-    visibility: hidden;
+        position: absolute;
+        text-align: center;
+        left: 25%;
+        z-index: 1;
+
     }
 
     #new-game-btn {

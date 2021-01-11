@@ -1,34 +1,39 @@
-export const canvas = document.getElementById('canvas');
-export const ctx = canvas.getContext('2d');
+
 
 export default class Canvas {
     constructor(w, h) {
-        canvas.width = w;
-        canvas.height = h;
+        this.canvas = document.createElement("canvas");
+        this.canvas.width = w;
+        this.canvas.height = h;
+        this.ctx = this.canvas.getContext('2d');
+    }
+
+    getCanvasElement() {
+        return this.canvas;
     }
 
     setWidth(w) {
-        canvas.width = w;
+        this.canvas.width = w;
     }
 
     setHeight(h) {
-        canvas.height = h;
+        this.canvas.height = h;
     }
 
     getWidth() {
-        return canvas.width;
+        return this.canvas.width;
     }
 
     getHeight() {
-        return canvas.height;
+        return this.canvas.height;
     }
 
     getContext() {
-        return ctx;
+        return this.ctx;
     }
 
     clear() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     }
 
     static LEFT = 0;
@@ -40,13 +45,13 @@ export default class Canvas {
 
         switch (side) {
             case this.RIGHT:
-                return { pos: { x: canvas.getWidth() + offset, y: canvas.getHeight() / 2 }, theta: 180 };
+                return { pos: { x: this.canvas.getWidth() + offset, y: this.canvas.getHeight() / 2 }, theta: 180 };
             case this.BOTTOM:
-                return { pos: { x: canvas.getWidth() / 2, y: canvas.getHeight() + offset }, theta: 270 };
+                return { pos: { x: this.canvas.getWidth() / 2, y: this.canvas.getHeight() + offset }, theta: 270 };
             case this.LEFT:
-                return { pos: { x: -offset, y: canvas.getHeight() / 2 }, theta: 0 };
+                return { pos: { x: -offset, y: this.canvas.getHeight() / 2 }, theta: 0 };
             case this.TOP:
-                return { pos: { x: canvas.getWidth() / 2, y: -offset }, theta: 90 };
+                return { pos: { x: this.canvas.getWidth() / 2, y: -offset }, theta: 90 };
         }
     }
 }

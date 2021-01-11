@@ -1,38 +1,45 @@
-import Canvas, { ctx } from "../Canvas";
+import { canvas } from "../..";
 
 let playing = false;
-const canvas = new Canvas(700, 600);
 
 
 export default class SceneController {
 
-    constructor() {
+    constructor(audioCtx, canvas) {
         this.scenes = [];
-        this.currentScene = 1;
+        this.currentScene = 0;
         this.dt = 0;
+        this.canvas = canvas;
+        this.audioCtx = audioCtx
+        this.mainGain = this.audioCtx.createGain();
         this.update = this.update.bind(this);
     }
 
     addScene(scene) {
         this.scenes.push(scene);
-
     }
 
     setScene(i) {
+        const scene = this.scenes[this.currentScene].scene;
+        if (scene) { scene.disconnect() };
         this.currentScene = i;
+        this.scenes[this.currentScene].scene.connect(this.mainGain);
     }
 
-
     update(now) {
-        canvas.clear();
+        this.canvas.clear();
         const scene = this.scenes[this.currentScene].scene;
         if (now - this.dt > 16) {
             this.dt = now;
             scene.update(now);
         }
 
-        scene.render(ctx);
+        scene.render(this.canvas.getContext());
         requestAnimationFrame(this.update);
+    }
+
+    connect(node) {
+        this.mainGain.connect(node);
     }
 
     restart() {
