@@ -28,7 +28,9 @@ export default class SceneController {
 
     update(now) {
         this.canvas.clear();
-        const scene = this.scenes[this.currentScene].scene;
+        let s = this.scenes[this.currentScene];
+        if (!s) return;
+        const scene = s.scene;
         if (now - this.dt > 16) {
             this.dt = now;
             scene.update(now);
